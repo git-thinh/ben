@@ -4,3 +4,9 @@
 .vs/ben/v15/Server/sqlite3/storage.ide
 .vs/ben/v15/Server/sqlite3/db.lock
 ben/obj/Debug/ben.csproj.CoreCompileInputs.cache
+/build/*.pdb
+/ben/obj
+.vs/ben/v15/.suo
+ben/bin/Debug/ben.pdb
+build/bin/components/xpti.dat
+build/bin/components/compreg.dat
