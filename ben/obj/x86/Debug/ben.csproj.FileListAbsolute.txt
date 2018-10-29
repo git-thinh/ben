@@ -1,0 +1,8 @@
+C:\ben\ben\obj\x86\Debug\ben.csprojResolveAssemblyReference.cache
+C:\ben\ben\obj\x86\Debug\ben.Properties.Resources.resources
+C:\ben\ben\obj\x86\Debug\ben.csproj.GenerateResource.Cache
+C:\ben\ben\obj\x86\Debug\ben.csproj.CoreCompileInputs.cache
+C:\ben\build\ben.exe
+C:\ben\build\ben.pdb
+C:\ben\ben\obj\x86\Debug\ben.exe
+C:\ben\ben\obj\x86\Debug\ben.pdb
