@@ -46,11 +46,22 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Speech">
+      <HintPath>..\dll\System.Speech.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Threading">
       <HintPath>..\dll\System.Threading.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <HintPath>..\dll\System.Xml.Linq.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Fleck\ConnectionNotAvailableException.cs" />
@@ -237,6 +248,25 @@
     <Compile Include="System\Tuple\IStructuralComparable.cs" />
     <Compile Include="System\Tuple\IStructuralEquatable.cs" />
     <Compile Include="System\Tuple\Tuple.cs" />
+    <Compile Include="TabStrip\BaseClasses\BaseStyledPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TabStrip\Control\FATabStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TabStrip\Control\FATabStripCloseButton.cs" />
+    <Compile Include="TabStrip\Control\FATabStripItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TabStrip\Control\FATabStripItemCollection.cs" />
+    <Compile Include="TabStrip\Control\FATabStripMenuGlyph.cs" />
+    <Compile Include="TabStrip\Delegates.cs" />
+    <Compile Include="TabStrip\Design\FATabStripDesigner.cs" />
+    <Compile Include="TabStrip\Design\FATabStripItemDesigner.cs" />
+    <Compile Include="TabStrip\Design\ICaptionSupport.cs" />
+    <Compile Include="TabStrip\Enums.cs" />
+    <Compile Include="TabStrip\Helpers\CollectionWithEvents.cs" />
+    <Compile Include="TabStrip\_CONST_TAB.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Fleck\ReadMe.txt" />
