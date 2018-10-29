@@ -10,3 +10,5 @@ ben/obj/Debug/ben.csproj.CoreCompileInputs.cache
 ben/bin/Debug/ben.pdb
 build/bin/components/xpti.dat
 build/bin/components/compreg.dat
+/build2/Cache
+/build2/*.pdb
