@@ -1,4 +1,7 @@
 /*
+
+https://flaviocopes.com/node-terminate-program/
+
 Use NodeJs implement for WebAPI:
 
 - Download NodeJS from address: https://nodejs.org/dist/v10.9.0/node-v10.9.0-linux-x64.tar.xz
