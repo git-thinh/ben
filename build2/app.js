@@ -12,12 +12,20 @@ Use NodeJs implement for WebAPI:
 	node --version
 	npm --version
 
+# Init an empty project, Answer whatever you want, and it will create package.json
+$ npm init
+ 
+# Install grpc libraries
+$ npm install --save grpc @grpc/proto-loader
 
 -----------------------------------------------------------------------
 npm install --save express
 npm install --save ws
 npm install --save underscore
 npm install --save lodash
+npm install --save grpc-caller
+npm install --save grpc-client
+npm install protobufjs [--save --save-prefix=~]
 
 */
 
@@ -96,28 +104,18 @@ const interval = setInterval(function ping() {
 }, 1000);
 /////////////////////////////////////////////////////////////////////////
 // START THE SERVER
+app.get('/exit_node', (req, res) => {
+    res.send('shutdown server...!');
+    process.kill(process.pid, 'SIGTERM');
+});
 server.listen(_PORT, function () {
     var host = server.address().address;
     var port = server.address().port;
     console.log('\r\n----> WebAPI listening at http://%s:%s \r\n\r\n', host, port);
 });
-
-//console.log('...............');
-
-//var readline = require('readline');
-//var rl = readline.createInterface(process.stdin, process.stdout);
-//rl.setPrompt('guess> ');
-//rl.prompt();
-//rl.on('line', function (line) {
-//    if (line === "right") rl.close();
-//    rl.prompt();
-//}).on('close', function () {
-//    process.exit(0);
-//});
-
 process.on('SIGTERM', () => {
     server.close(() => {
         console.log('Process terminated');
         process.exit();
     })
-})
+});

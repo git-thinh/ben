@@ -10,18 +10,19 @@ namespace test
 {
     class Program
     {
-        static void Main2(string[] args)
+        static void Main(string[] args)
         {
-            ProcessStartInfo psi = new ProcessStartInfo("CtrlCClient.exe");
+            ProcessStartInfo psi = new ProcessStartInfo("node.exe", "app.js");
             psi.RedirectStandardInput = true;
             psi.RedirectStandardOutput = true;
             psi.RedirectStandardError = true;
             psi.UseShellExecute = false;
-            Process proc = Process.Start(psi);
-            Console.WriteLine("{0} is active: {1}", proc.Id, !proc.HasExited);
-            proc.StandardInput.WriteLine("\x3");
-            Console.WriteLine(proc.StandardOutput.ReadToEnd());
-            Console.WriteLine("{0} is active: {1}", proc.Id, !proc.HasExited);
+            Process p = Process.Start(psi);
+            Console.WriteLine("{0} is active: {1}", p.Id, !p.HasExited);
+            p.StandardInput.WriteLine("SIGTERM");
+            //p.StandardInput.WriteLine("\x3");
+            Console.WriteLine(p.StandardOutput.ReadToEnd());
+            Console.WriteLine("{0} is active: {1}", p.Id, !p.HasExited);
             Console.ReadLine();
         }
 
@@ -117,7 +118,7 @@ namespace test
         //}
 
         //the main method..
-        static int Main(string[] args)
+        static int Main55(string[] args)
         {
             //hook up the event handler in the parent
             //Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
