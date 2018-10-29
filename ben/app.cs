@@ -51,8 +51,8 @@ namespace en2
         [STAThread]
         public static void Main(string[] args)
         {
-            //////////var http = new HttpProxyServer();
-            //////////http.Start("http://*:56789/");
+            var http = new HttpProxyServer();
+            http.Start("http://*:56789/");
 
             //System.Net.ServicePointManager.DefaultConnectionLimit = 1000;
             //// active SSL 1.1, 1.2, 1.3 for WebClient request HTTPS
@@ -335,7 +335,7 @@ namespace en2
             urlbox.Width = 200;
             //urlbox.Text = "https://getfirebug.com/releases/lite/1.2/";
             //urlbox.Text = "file:///G:/en2/build/view/demo.html";
-            //urlbox.Text = "file:///G:/en2/build/view/demo.html";
+            urlbox.Text = "http://localhost:56789?proxy=https://dictionary.cambridge.org/grammar/british-grammar/above-or-over";
 
             Button nav = new Button();
             nav.Text = "Go";
@@ -351,26 +351,26 @@ namespace en2
 
             browser.DocumentCompleted += (se, ev) =>
             {
-                if (html == string.Empty)
-                {
-                    string url = "https://dictionary.cambridge.org/grammar/british-grammar/above-or-over", text = string.Empty, _fix_lib = string.Empty;
+                //if (html == string.Empty)
+                //{
+                //    string url = "https://dictionary.cambridge.org/grammar/british-grammar/above-or-over", text = string.Empty, _fix_lib = string.Empty;
 
-                    Debug.WriteLine("#-> " + url);
+                //    Debug.WriteLine("#-> " + url);
 
-                    text = f_link_getHtmlOnline(url);
+                //    text = f_link_getHtmlOnline(url);
 
-                    string head = text.Split(new string[] { "<body" }, StringSplitOptions.None)[0], s = "<div" + text.Substring(head.Length + 5);
-                    int posH1 = s.ToLower().IndexOf("<h1");
-                    if (posH1 != -1) s = s.Substring(posH1, s.Length - posH1);
+                //    string head = text.Split(new string[] { "<body" }, StringSplitOptions.None)[0], s = "<div" + text.Substring(head.Length + 5);
+                //    int posH1 = s.ToLower().IndexOf("<h1");
+                //    if (posH1 != -1) s = s.Substring(posH1, s.Length - posH1);
 
-                    head = Html.f_html_Format(url, head);
-                    s = Html.f_html_Format(url, s);
+                //    head = Html.f_html_Format(url, head);
+                //    s = Html.f_html_Format(url, s);
 
-                    //if (File.Exists("view/fix.html")) _fix_lib = File.ReadAllText("view/fix.html");
-                    text = head.Replace("<head>", @"<head><meta http-equiv=""Content-Type"" content=""text/html; charset=utf-8"" />" + _fix_lib) + "<body><article id=___body><!--START_BODY-->" + s + "<!--END_BODY--></article></body></html>";
-                    html = s;
-                }
-                browser.Document.Body.InnerHtml = html;
+                //    //if (File.Exists("view/fix.html")) _fix_lib = File.ReadAllText("view/fix.html");
+                //    text = head.Replace("<head>", @"<head><meta http-equiv=""Content-Type"" content=""text/html; charset=utf-8"" />" + _fix_lib) + "<body><article id=___body><!--START_BODY-->" + s + "<!--END_BODY--></article></body></html>";
+                //    html = s;
+                //}
+                //browser.Document.Body.InnerHtml = html;
 
                 //Debug.WriteLine(browser.Document.Body.InnerHtml)
 

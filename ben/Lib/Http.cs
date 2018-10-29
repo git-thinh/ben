@@ -6,11 +6,135 @@ using System.Net;
 
 using System.IO;
 using System.Diagnostics;
+using System.Web;
 
 namespace System
 {
     public class HttpProxyServer : HttpServer
     {
+
+        string f_link_getHtmlOnline(string url)
+        {
+            /* https://stackoverflow.com/questions/4291912/process-start-how-to-get-the-output */
+            Process process = new Process();
+            process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.FileName = "bin/curl.exe";
+            //process.StartInfo.Arguments = url;
+            process.StartInfo.Arguments = url;
+            //process.StartInfo.Arguments = "--insecure " + url;
+            //process.StartInfo.Arguments = "--max-time 5 -v " + url; /* -v url: handle error 302 found redirect localtion*/
+            //process.StartInfo.Arguments = "-m 5 -v " + url; /* -v url: handle error 302 found redirect localtion*/
+            //process.StartInfo.Arguments = "--insecure -v " + url + @" -H ""User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:62.0) Gecko/20100101 Firefox/62.0"""; /* -v url: handle error 302 found redirect localtion*/
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.StandardOutputEncoding = Encoding.UTF8;
+            process.Start();
+            //* Read the output (or the error)
+            string html = process.StandardOutput.ReadToEnd();
+            //if (string.IsNullOrEmpty(html))
+            //{
+            //    string err = process.StandardError.ReadToEnd(), urlDirect = string.Empty;
+
+            //    int pos = err.IndexOf("< Location: ");
+            //    if (pos != -1)
+            //    {
+            //        urlDirect = err.Substring(pos + 12, err.Length - (pos + 12)).Split(new char[] { '\r', '\n' })[0].Trim();
+            //        if (urlDirect[0] == '/')
+            //        {
+            //            Uri uri = new Uri(url);
+            //            urlDirect = uri.Scheme + "://" + uri.Host + urlDirect;
+            //        }
+
+            //        Debug.WriteLine("-> Redirect: " + urlDirect);
+
+
+            //        html = f_link_getHtmlCache(urlDirect);
+            //        if (string.IsNullOrEmpty(html))
+            //        {
+            //            return "<script> location.href='" + urlDirect + "'; </script>";
+            //        }
+            //        else
+            //            return html;
+            //    }
+            //    else
+            //    {
+            //        Debug.WriteLine(" ??????????????????????????????????????????? ERROR: " + url);
+            //    }
+
+            //    Debug.WriteLine(" -> Fail: " + url);
+
+            //    return null;
+            //}
+
+            Debug.WriteLine(" -> Ok: " + url);
+
+            //////string title = Html.f_html_getTitle(html);
+            //html = _htmlFormat(url, html);
+            //////f_cacheUrl(url);
+            //////CACHE.TryAdd(url, html);
+
+            //string err = process.StandardError.ReadToEnd();
+            process.WaitForExit();
+
+            ////if (_fomMain != null) _fomMain.f_browser_updateInfoPage(url, title);
+
+            return html;
+
+            //////* Create your Process
+            ////Process process = new Process();
+            ////process.StartInfo.FileName = "curl.exe";
+            ////process.StartInfo.Arguments = url;
+            ////process.StartInfo.UseShellExecute = false;
+            ////process.StartInfo.RedirectStandardOutput = true;
+            ////process.StartInfo.RedirectStandardError = true;
+            ////process.StartInfo.StandardOutputEncoding = Encoding.UTF8;
+            //////* Set your output and error (asynchronous) handlers
+            ////process.OutputDataReceived += (se, ev) => {
+            ////    string html = ev.Data;
+
+            ////    _link.TryAdd(url, _link.Count + 1);
+            ////    _html.TryAdd(url, html);
+            ////};
+            //////process.ErrorDataReceived += new DataReceivedEventHandler(OutputHandler);
+            //////* Start process and handlers
+            ////process.Start();
+            ////process.BeginOutputReadLine();
+            ////process.BeginErrorReadLine();
+            ////process.WaitForExit(); 
+        }
+
+        string _htmlFormat(string url, string html)
+        {
+            string s = HttpUtility.HtmlDecode(html);
+
+            // Fetch all url same domain in this page ...
+            //string[] urls = Html.f_html_actractUrl(url, s);
+            s = Html.f_html_Format(url, s);
+
+            int posH1 = s.ToLower().IndexOf("<h1");
+            if (posH1 != -1) s = s.Substring(posH1, s.Length - posH1);
+
+            return s;
+        }
+
+        string f_text_convert_UTF8_ACSII(string utf8)
+        {
+            string stFormD = utf8.Normalize(NormalizationForm.FormD);
+            StringBuilder sb = new StringBuilder();
+            for (int ich = 0; ich < stFormD.Length; ich++)
+            {
+                System.Globalization.UnicodeCategory uc = System.Globalization.CharUnicodeInfo.GetUnicodeCategory(stFormD[ich]);
+                if (uc != System.Globalization.UnicodeCategory.NonSpacingMark)
+                {
+                    sb.Append(stFormD[ich]);
+                }
+            }
+            sb = sb.Replace('Đ', 'D');
+            sb = sb.Replace('đ', 'd');
+            return (sb.ToString().Normalize(NormalizationForm.FormD));
+        }
+
         protected override void ProcessRequest(System.Net.HttpListenerContext Context)
         {
             HttpListenerRequest Request = Context.Request;
@@ -19,6 +143,37 @@ namespace System
             string htm = "";
             byte[] bOutput;
             Stream OutputStream = Response.OutputStream;
+            string proxy = Request.QueryString["proxy"];
+            if (!string.IsNullOrEmpty(proxy)) {
+                proxy = HttpUtility.UrlDecode(proxy);
+
+               // proxy = "https://dictionary.cambridge.org/grammar/british-grammar/above-or-over";
+
+                string text = string.Empty, _fix_lib = string.Empty;
+
+                Debug.WriteLine("#-> " + proxy);
+
+                text = f_link_getHtmlOnline(proxy);
+
+                string head = text.Split(new string[] { "<body" }, StringSplitOptions.None)[0], s = "<div" + text.Substring(head.Length + 5);
+                int posH1 = s.ToLower().IndexOf("<h1");
+                if (posH1 != -1) s = s.Substring(posH1, s.Length - posH1);
+
+                head = Html.f_html_Format(proxy, head);
+                s = Html.f_html_Format(proxy, s);
+
+                //if (File.Exists("view/fix.html")) _fix_lib = File.ReadAllText("view/fix.html");
+                text = head.Replace("<head>", @"<head><meta http-equiv=""Content-Type"" content=""text/html; charset=utf-8"" />" + _fix_lib) + "<body><article id=___body><!--START_BODY-->" + s + "<!--END_BODY--></article></body></html>";
+                htm = s;
+
+                bOutput = System.Text.Encoding.UTF8.GetBytes(htm);
+                Response.ContentType = "text/html; charset=utf-8";
+                Response.ContentLength64 = bOutput.Length;
+                OutputStream.Write(bOutput, 0, bOutput.Length);
+                OutputStream.Close();
+                return;
+            }
+
             StringBuilder bi = new StringBuilder();
 
             switch (Request.HttpMethod)
