@@ -16,3 +16,5 @@ build/bin/components/compreg.dat
 /lib/bin
 /api/bin
 /api/obj
+/test/bin
+/test/obj
