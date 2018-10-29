@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api", "api\api.csproj", "{9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lib", "lib\lib.csproj", "{2FE79DCE-C88F-423D-8B1B-FF9EE59E189E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0F536897-5832-4A49-BBD5-ECE97C74F9AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9C2FE0B5-3369-4689-BC73-42865B8E71E7} = {0F536897-5832-4A49-BBD5-ECE97C74F9AD}
+		{2FE79DCE-C88F-423D-8B1B-FF9EE59E189E} = {0F536897-5832-4A49-BBD5-ECE97C74F9AD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CFDCF978-E20D-4933-9A06-FB3AE9F10830}
