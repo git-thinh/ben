@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2FE79DCE-C88F-423D-8B1B-FF9EE59E189E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>lib</RootNamespace>
+    <AssemblyName>lib</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\build2\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="libcurl.NET">
+      <HintPath>..\dll\libcurl.NET.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\dll\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <HintPath>..\dll\System.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Threading">
+      <HintPath>..\dll\System.Threading.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Fleck\ConnectionNotAvailableException.cs" />
+    <Compile Include="Fleck\FleckLog.cs" />
+    <Compile Include="Fleck\FrameType.cs" />
+    <Compile Include="Fleck\HandlerFactory.cs" />
+    <Compile Include="Fleck\Handlers\ComposableHandler.cs" />
+    <Compile Include="Fleck\Handlers\Draft76Handler.cs" />
+    <Compile Include="Fleck\Handlers\FlashSocketPolicyRequestHandler.cs" />
+    <Compile Include="Fleck\Handlers\Hybi13Handler.cs" />
+    <Compile Include="Fleck\Helpers\MonoHelper.cs" />
+    <Compile Include="Fleck\Interfaces\IHandler.cs" />
+    <Compile Include="Fleck\Interfaces\ISocket.cs" />
+    <Compile Include="Fleck\Interfaces\IWebSocketConnection.cs" />
+    <Compile Include="Fleck\Interfaces\IWebSocketConnectionInfo.cs" />
+    <Compile Include="Fleck\Interfaces\IWebSocketServer.cs" />
+    <Compile Include="Fleck\IntExtensions.cs" />
+    <Compile Include="Fleck\QueuedStream.cs" />
+    <Compile Include="Fleck\ReadState.cs" />
+    <Compile Include="Fleck\RequestParser.cs" />
+    <Compile Include="Fleck\SocketWrapper.cs" />
+    <Compile Include="Fleck\SubProtocolNegotiationFailureException.cs" />
+    <Compile Include="Fleck\SubProtocolNegotiator.cs" />
+    <Compile Include="Fleck\WebSocketConnection.cs" />
+    <Compile Include="Fleck\WebSocketConnectionInfo.cs" />
+    <Compile Include="Fleck\WebSocketException.cs" />
+    <Compile Include="Fleck\WebSocketHttpRequest.cs" />
+    <Compile Include="Fleck\WebSocketServer.cs" />
+    <Compile Include="Fleck\WebSocketStatusCodes.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\MessageShark\CustomBinary.cs" />
+    <Compile Include="Serialization\MessageShark\CustomBinary.Deserializer.cs" />
+    <Compile Include="Serialization\MessageShark\CustomBinary.IL.Deserialize.cs" />
+    <Compile Include="Serialization\MessageShark\CustomBinary.IL.Generator.cs" />
+    <Compile Include="Serialization\MessageShark\CustomBinary.IL.Serialize.cs" />
+    <Compile Include="Serialization\MessageShark\CustomBinary.Serializer.cs" />
+    <Compile Include="Serialization\MessageShark\CustomBinary.Setup.cs" />
+    <Compile Include="Serialization\MessageShark\CustomBuffer.cs" />
+    <Compile Include="Serialization\MessageShark\InternalWrapper.cs" />
+    <Compile Include="Serialization\MessageShark\ISerializer.cs" />
+    <Compile Include="Serialization\MessageShark\MessageSharkIgnoreAttribute.cs" />
+    <Compile Include="Serialization\MessageShark\MessageSharkIncludeAttribute.cs" />
+    <Compile Include="Serialization\MessageShark\MessageSharkSerializer.cs" />
+    <Compile Include="System\Tuple\IStructuralComparable.cs" />
+    <Compile Include="System\Tuple\IStructuralEquatable.cs" />
+    <Compile Include="System\Tuple\Tuple.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Fleck\ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

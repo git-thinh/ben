@@ -12,3 +12,7 @@ build/bin/components/xpti.dat
 build/bin/components/compreg.dat
 /build2/Cache
 /build2/*.pdb
+/lib/obj
+/lib/bin
+/api/bin
+/api/obj

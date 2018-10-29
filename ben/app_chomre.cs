@@ -106,7 +106,7 @@ namespace en2
         {
             var tabPage = new TabPage();
             tabPage.Text = "blank";
-            var browser = new CefWebBrowser() {  };
+            var browser = new CefWebBrowser();
             browser.Dock = DockStyle.Fill;
 
             tabPage.DockPadding.Top = 25;
