@@ -114,3 +114,10 @@ server.listen(_PORT, function () {
 //}).on('close', function () {
 //    process.exit(0);
 //});
+
+process.on('SIGTERM', () => {
+    server.close(() => {
+        console.log('Process terminated');
+        process.exit();
+    })
+})
