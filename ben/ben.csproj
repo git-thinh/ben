@@ -54,6 +54,11 @@
       <HintPath>..\dll\CefSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="libcurl.NET, Version=1.4.1.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dll\libcurl.NET.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\dll\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
@@ -75,7 +80,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="app2.cs" />
+    <Compile Include="app_chomre.cs" />
+    <Compile Include="Lib\curl\EasyDataRecorder.cs" />
     <Compile Include="Lib\Google\GooTranslateService_v1.cs" />
     <Compile Include="Lib\Google\GooTranslateService_v2.cs" />
     <Compile Include="Lib\Html.cs" />

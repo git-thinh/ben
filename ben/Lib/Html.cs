@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SeasideResearch.LibCurlNet;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,10 +12,105 @@ namespace System
 {
     static class Html
     {
+        private static CURLcode OnSSLContext(SSLContext ctx, Object extraData)
+        {
+            // To do anything useful with the SSLContext object, you'll need
+            // to call the OpenSSL native methods on your own. So for this
+            // demo, we just return what cURL is expecting.
+            return CURLcode.CURLE_OK;
+        }
+
+        public static string f_https_getTextByUrl(string url)
+        {
+            var dataRecorder = new EasyDataRecorder();
+
+            Curl.GlobalInit((int)CURLinitFlag.CURL_GLOBAL_DEFAULT);
+            try
+            {
+                using (Easy easy = new Easy())
+                {
+                    easy.SetOpt(CURLoption.CURLOPT_WRITEFUNCTION, (Easy.WriteFunction)dataRecorder.HandleWrite);
+                    
+                    Easy.SSLContextFunction sf = new Easy.SSLContextFunction(OnSSLContext);
+                    easy.SetOpt(CURLoption.CURLOPT_SSL_CTX_FUNCTION, sf);
+
+                    easy.SetOpt(CURLoption.CURLOPT_URL, url);
+                    //easy.SetOpt(CURLoption.CURLOPT_CAINFO, "ca-bundle.crt");
+                    easy.SetOpt(CURLoption.CURLOPT_CAINFO, "ca-bundle.crt");
+
+
+                    easy.Perform();
+                }
+            }
+            finally
+            {
+                Curl.GlobalCleanup();
+            }
+
+            string s = Encoding.UTF8.GetString(dataRecorder.Written.ToArray());
+            return s;
+        }
+        
+        public static string f_http_getTextByUrl(string url)
+        {
+            var dataRecorder = new EasyDataRecorder();
+
+            Curl.GlobalInit((int)CURLinitFlag.CURL_GLOBAL_DEFAULT);
+            try
+            {
+                using (Easy easy = new Easy())
+                {
+                    easy.SetOpt(CURLoption.CURLOPT_WRITEFUNCTION, (Easy.WriteFunction)dataRecorder.HandleWrite);
+                    easy.Perform();
+                }
+            }
+            finally
+            {
+                Curl.GlobalCleanup();
+            }
+
+            string s = Encoding.UTF8.GetString(dataRecorder.Written.ToArray());
+            return s;
+        }
+
+
         public static string f_html_getTitle(string html) {
             string title = Regex.Match(html, @"\<title\b[^>]*\>\s*(?<Title>[\s\S]*?)\</title\>", RegexOptions.IgnoreCase).Groups["Title"].Value;
             return title;
         }
+
+
+        public static string _htmlFormat(string url, string html)
+        {
+            string s = HttpUtility.HtmlDecode(html);
+
+            // Fetch all url same domain in this page ...
+            //string[] urls = Html.f_html_actractUrl(url, s);
+            s = Html.f_html_Format(url, s);
+
+            int posH1 = s.ToLower().IndexOf("<h1");
+            if (posH1 != -1) s = s.Substring(posH1, s.Length - posH1);
+
+            return s;
+        }
+
+        public static string f_text_convert_UTF8_ACSII(string utf8)
+        {
+            string stFormD = utf8.Normalize(NormalizationForm.FormD);
+            StringBuilder sb = new StringBuilder();
+            for (int ich = 0; ich < stFormD.Length; ich++)
+            {
+                System.Globalization.UnicodeCategory uc = System.Globalization.CharUnicodeInfo.GetUnicodeCategory(stFormD[ich]);
+                if (uc != System.Globalization.UnicodeCategory.NonSpacingMark)
+                {
+                    sb.Append(stFormD[ich]);
+                }
+            }
+            sb = sb.Replace('Đ', 'D');
+            sb = sb.Replace('đ', 'd');
+            return (sb.ToString().Normalize(NormalizationForm.FormD));
+        }
+
 
         //public static void f_html_getSourceByUrl(string url, Action<string, string> f_callback_fail, Action<string, oPage> f_callback_success)
         //{
