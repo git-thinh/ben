@@ -30,7 +30,7 @@ namespace System
                 using (Easy easy = new Easy())
                 {
                     easy.SetOpt(CURLoption.CURLOPT_WRITEFUNCTION, (Easy.WriteFunction)dataRecorder.HandleWrite);
-                    
+
                     Easy.SSLContextFunction sf = new Easy.SSLContextFunction(OnSSLContext);
                     easy.SetOpt(CURLoption.CURLOPT_SSL_CTX_FUNCTION, sf);
 
@@ -50,7 +50,7 @@ namespace System
             string s = Encoding.UTF8.GetString(dataRecorder.Written.ToArray());
             return s;
         }
-        
+
         public static string f_http_getTextByUrl(string url)
         {
             var dataRecorder = new EasyDataRecorder();
@@ -74,7 +74,8 @@ namespace System
         }
 
 
-        public static string f_html_getTitle(string html) {
+        public static string f_html_getTitle(string html)
+        {
             string title = Regex.Match(html, @"\<title\b[^>]*\>\s*(?<Title>[\s\S]*?)\</title\>", RegexOptions.IgnoreCase).Groups["Title"].Value;
             return title;
         }
@@ -111,6 +112,101 @@ namespace System
             return (sb.ToString().Normalize(NormalizationForm.FormD));
         }
 
+        /*
+
+        public string f_link_getHtmlOnline(string url)
+        {
+             //https://stackoverflow.com/questions/4291912/process-start-how-to-get-the-output 
+        Process process = new Process();
+        process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.FileName = "bin/curl.exe";
+            //process.StartInfo.Arguments = url;
+            process.StartInfo.Arguments = url;
+            //process.StartInfo.Arguments = "--insecure " + url;
+            //process.StartInfo.Arguments = "--max-time 5 -v " + url; // -v url: handle error 302 found redirect localtion
+            //process.StartInfo.Arguments = "-m 5 -v " + url; //-v url: handle error 302 found redirect localtion
+            //process.StartInfo.Arguments = "--insecure -v " + url + @" -H ""User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:62.0) Gecko/20100101 Firefox/62.0"""; // -v url: handle error 302 found redirect localtion
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.StandardOutputEncoding = Encoding.UTF8;
+            process.Start();
+           // Read the output (or the error)
+            string html = process.StandardOutput.ReadToEnd();
+        //if (string.IsNullOrEmpty(html))
+        //{
+        //    string err = process.StandardError.ReadToEnd(), urlDirect = string.Empty;
+
+        //    int pos = err.IndexOf("< Location: ");
+        //    if (pos != -1)
+        //    {
+        //        urlDirect = err.Substring(pos + 12, err.Length - (pos + 12)).Split(new char[] { '\r', '\n' })[0].Trim();
+        //        if (urlDirect[0] == '/')
+        //        {
+        //            Uri uri = new Uri(url);
+        //            urlDirect = uri.Scheme + "://" + uri.Host + urlDirect;
+        //        }
+
+        //        Debug.WriteLine("-> Redirect: " + urlDirect);
+
+
+        //        html = f_link_getHtmlCache(urlDirect);
+        //        if (string.IsNullOrEmpty(html))
+        //        {
+        //            return "<script> location.href='" + urlDirect + "'; </script>";
+        //        }
+        //        else
+        //            return html;
+        //    }
+        //    else
+        //    {
+        //        Debug.WriteLine(" ??????????????????????????????????????????? ERROR: " + url);
+        //    }
+
+        //    Debug.WriteLine(" -> Fail: " + url);
+
+        //    return null;
+        //}
+
+        Debug.WriteLine(" -> Ok: " + url);
+
+            //////string title = Html.f_html_getTitle(html);
+            //html = _htmlFormat(url, html);
+            //////f_cacheUrl(url);
+            //////CACHE.TryAdd(url, html);
+
+            //string err = process.StandardError.ReadToEnd();
+            process.WaitForExit();
+
+            ////if (_fomMain != null) _fomMain.f_browser_updateInfoPage(url, title);
+
+            return html;
+
+            //////* Create your Process
+            ////Process process = new Process();
+            ////process.StartInfo.FileName = "curl.exe";
+            ////process.StartInfo.Arguments = url;
+            ////process.StartInfo.UseShellExecute = false;
+            ////process.StartInfo.RedirectStandardOutput = true;
+            ////process.StartInfo.RedirectStandardError = true;
+            ////process.StartInfo.StandardOutputEncoding = Encoding.UTF8;
+            //////* Set your output and error (asynchronous) handlers
+            ////process.OutputDataReceived += (se, ev) => {
+            ////    string html = ev.Data;
+
+            ////    _link.TryAdd(url, _link.Count + 1);
+            ////    _html.TryAdd(url, html);
+            ////};
+            //////process.ErrorDataReceived += new DataReceivedEventHandler(OutputHandler);
+            //////* Start process and handlers
+            ////process.Start();
+            ////process.BeginOutputReadLine();
+            ////process.BeginErrorReadLine();
+            ////process.WaitForExit(); 
+        }
+
+
+             */
 
         //public static void f_html_getSourceByUrl(string url, Action<string, string> f_callback_fail, Action<string, oPage> f_callback_success)
         //{
