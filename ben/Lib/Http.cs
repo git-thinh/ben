@@ -58,12 +58,12 @@ namespace System
                                 case "/":
                                     htm = DateTime.Now.ToString();
                                     break;
-                                case "/firebug-lite-compressed.js":
+                                case "/firebug-lite.1.2.js":
                                     _type = "text/javascript";
                                     _path = "bin" + url;
                                     htm = File.ReadAllText(_path);
                                     break;
-                                case "/firebug-lite.css":
+                                case "/firebug-lite.1.2.css":
                                     _type = "text/css";
                                     _path = "bin" + url;
                                     htm = File.ReadAllText(_path);

@@ -374,7 +374,7 @@ namespace en2
 
                 //Debug.WriteLine(browser.Document.Body.InnerHtml)
 
-                string firebuglite_bookmark_run = "javascript:var firebug=document.createElement('script');firebug.setAttribute('src','http://localhost:56789/firebug-lite-compressed.js');document.body.appendChild(firebug);(function(){if(window.firebug.version){firebug.init();}else{setTimeout(arguments.callee);}})();void(firebug);";
+                string firebuglite_bookmark_run = "javascript:var firebug=document.createElement('script');firebug.setAttribute('src','http://localhost:56789/firebug-lite.1.2.js');document.body.appendChild(firebug);(function(){if(window.firebug.version){firebug.init();}else{setTimeout(arguments.callee);}})();void(firebug);";
                 browser.Navigate(firebuglite_bookmark_run);
             };
 
