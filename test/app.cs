@@ -12,6 +12,15 @@ namespace test
     {
         static void Main(string[] args)
         {
+            var http = new HttpProxyServer();
+            http.Start("http://*:3399/");
+
+            Console.ReadLine();
+        }
+
+
+        static void Main9(string[] args)
+        {
             ProcessStartInfo psi = new ProcessStartInfo("node.exe", "app.js");
             psi.RedirectStandardInput = true;
             psi.RedirectStandardOutput = true;
