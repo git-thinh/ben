@@ -1,5 +1,5 @@
 /*
-
+https://www.npmjs.com/package/ps-node
 https://nodejs.org/api/child_process.html#child_process_child_process_execfile_file_args_options_callback
 
 https://flaviocopes.com/node-terminate-program/
