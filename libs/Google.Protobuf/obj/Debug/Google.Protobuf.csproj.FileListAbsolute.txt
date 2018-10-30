@@ -1,0 +1,4 @@
+G:\ben\dll\Google.Protobuf.dll
+G:\ben\dll\Google.Protobuf.pdb
+G:\ben\libs\Google.Protobuf\obj\Debug\Google.Protobuf.dll
+G:\ben\libs\Google.Protobuf\obj\Debug\Google.Protobuf.pdb
