@@ -1,6 +1,13 @@
 /*
 
 https://flaviocopes.com/node-terminate-program/
+https://github.com/dcodeIO/protobuf.js/wiki/How-to-read-binary-data-in-the-browser-or-under-node.js%3F
+https://github.com/dcodeIO/bytebuffer.js/issues/19
+https://github.com/dcodeIO/protobuf.js/issues/123
+https://github.com/dcodeIO/protobuf.js/issues/735
+https://github.com/dcodeIO/protobuf.js/wiki/How-to-reverse-engineer-a-buffer-by-hand
+https://github.com/improbable-eng/grpc-web/tree/master/ts/src/transports
+
 
 Use NodeJs implement for WebAPI:
 
