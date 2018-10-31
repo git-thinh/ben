@@ -34,6 +34,17 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 //app.use(express.static('public'));
 /////////////////////////////////////////////////////////////////////////
+
+const _GOO_DRIVER_API_URL = {
+    GET_USER_INFO: "http://localhost:3399/GET_USER_INFO",
+    GET_RETRIEVE_ALL_FILES: "http://localhost:3399/GET_RETRIEVE_ALL_FILES",
+    GET_FILE: "http://localhost:3399/GET_FILE",
+    POST_CREATE_TOKEN_NEW: "http://localhost:3399/POST_CREATE_TOKEN_NEW",
+    POST_GET_USER_INFO_OR_CREATE_NEW_IF_NOT_EXIST: "http://localhost:3399/POST_GET_USER_INFO_OR_CREATE_NEW_IF_NOT_EXIST",
+    POST_UPLOAD_FILE: "http://localhost:3399/POST_UPLOAD_FILE",
+    POST_UPDATE_FILE: "http://localhost:3399/POST_UPDATE_FILE"
+};
+
 const _URL = {
     get_token: 'http://localhost:' + _PORT + '/get_token',
     get_info: 'http://localhost:' + _PORT + '/get_info',
@@ -42,14 +53,9 @@ const _URL = {
 
 app.get('/', function (req, res) {
     var code = req.query.code;
-    var scope = req.query.scope;
-
     if (code == null) {
         const _OPEN_AUTH_CLIENT = new google.auth.OAuth2(_CONFIG.CLIENT_ID, _CONFIG.CLIENT_SECRET, _CONFIG.REDIRECT_URI);
-        const url_oauthcallback = _OPEN_AUTH_CLIENT.generateAuthUrl({
-            access_type: 'offline',
-            scope: _CONFIG.SCOPES
-        });
+        const url_oauthcallback = _OPEN_AUTH_CLIENT.generateAuthUrl({ access_type: 'offline', scope: _CONFIG.SCOPES });
         res.redirect(url_oauthcallback);
     } else {
         _CONFIG.CODE_AUTH_CLIENT = code;
@@ -60,7 +66,7 @@ app.get('/', function (req, res) {
 app.get('/get_info', (req, res) => res.json(_CONFIG));
 
 const _fet_GET_USER_INFO_OR_CREATE_NEW_IF_NOT_EXIST = async (req, res, next) => {
-    var data = await fetch(_CONFIG.HOST_API + '/GET_USER_INFO_OR_CREATE_NEW_IF_NOT_EXIST', { method: 'POST', body: JSON.stringify(_CONFIG) }).then(res => res.json());
+    var data = await fetch(_GOO_DRIVER_API_URL.POST_GET_USER_INFO_OR_CREATE_NEW_IF_NOT_EXIST, { method: 'POST', body: JSON.stringify(_CONFIG) }).then(res => res.json());
     _CONFIG.USER_INFO = data;
     req.data = data;
     req.data.urls = _URL;
@@ -69,14 +75,13 @@ const _fet_GET_USER_INFO_OR_CREATE_NEW_IF_NOT_EXIST = async (req, res, next) => 
 app.get('/get_token', _fet_GET_USER_INFO_OR_CREATE_NEW_IF_NOT_EXIST, ({ data }, res) => res.json(_CONFIG));
 
 const _fet_GET_RETRIEVE_ALL_FILES = async (req, res, next) => {
-    req.data = await fetch(_CONFIG.HOST_API + '/GET_RETRIEVE_ALL_FILES').then(res => res.json());
+    req.data = await fetch(_GOO_DRIVER_API_URL.GET_RETRIEVE_ALL_FILES).then(res => res.json());
     req.data.urls = _URL;
     next();
 };
 app.get('/get_files', _fet_GET_RETRIEVE_ALL_FILES, ({ data }, res) => res.json(data));
 /////////////////////////////////////////////////////////////////////////
-const _CONFIG = {
-    HOST_API: 'http://localhost:3399',
+const _CONFIG = { 
     URLS: _URL,
     CLIENT_ID: "962642037870-u8gg10odivorhmn19o3qqq9hlbmtras3.apps.googleusercontent.com",
     CLIENT_SECRET: "x8FbmONjiC3GN7lSPvyPwgG2",

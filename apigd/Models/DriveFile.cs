@@ -22,6 +22,7 @@ namespace DrEdit.Models
 {
     public class DriveFile
     {
+        public string id { get; set; }
         public string title { get; set; }
         public string description { get; set; }
         public string mimeType { get; set; }
@@ -29,6 +30,7 @@ namespace DrEdit.Models
 
         public DriveFile(File file, string content)
         {
+            this.id = file.Id;
             this.title = file.Title;
             this.description = file.Description;
             this.mimeType = file.MimeType;

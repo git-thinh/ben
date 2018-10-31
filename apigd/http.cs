@@ -21,57 +21,88 @@ namespace System
     {
         readonly IGooDriver _gooDriver;
         public HttpProxyServer(IGooDriver gooDriver) : base() { this._gooDriver = gooDriver; }
-        protected override void ProcessRequest(System.Net.HttpListenerContext Context)
+        protected override void ProcessRequest(System.Net.HttpListenerContext context)
         {
-            HttpListenerRequest Request = Context.Request;
-            HttpListenerResponse Response = Context.Response;
-            Response.AppendHeader("Access-Control-Allow-Origin", "*");
-            Response.AppendHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-            Response.AppendHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            context.Response.AppendHeader("Access-Control-Allow-Origin", "*");
+            context.Response.AppendHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+            context.Response.AppendHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            context.Response.Headers.Add("Cache-Control", "no-cache, no-store");
+            context.Response.AddHeader("Pragma", "no-cache");
+            context.Response.AddHeader("Pragma", "no-store");
+            context.Response.AddHeader("cache-control", "no-cache");
 
-            // Do any of these result in META tags e.g. <META HTTP-EQUIV="Expire" CONTENT="-1">
-            // HTTP Headers or both?            
-            // Is this required for FireFox? Would be good to do this without magic strings.
-            // Won't it overwrite the previous setting
-            //Response.Headers.Add("Cache-Control", "no-cache, no-store");
-            Response.AddHeader("Pragma", "no-cache");
-            Response.AddHeader("Pragma", "no-store");
-            Response.AddHeader("cache-control", "no-cache");
+            string result = string.Empty, file_id = string.Empty, content_type = "application/json; charset=utf-8";
+            //content_type = "text/html; charset=utf-8"; 
+            byte[] buf = null;
 
-            string result = string.Empty, data = string.Empty,
-                content_type = "text/html; charset=utf-8",
-                uri = HttpUtility.UrlDecode(Request.RawUrl);
-            Stream OutputStream = Response.OutputStream;
-            byte[] bOutput;
-
-            switch (Request.Url.LocalPath)
+            try
             {
-                case "/favicon.ico":
-                    break;
-                case "/GET_USER_INFO_OR_CREATE_NEW_IF_NOT_EXIST":
-                    content_type = "application/json; charset=utf-8";
-                    byte[] buf = ReadFully(Request.InputStream);
-                    if (buf.Length > 0)
-                    {
-                        string json = Encoding.UTF8.GetString(buf);
-                        OPEN_AUTH_CLIENT clientCredentials = JsonConvert.DeserializeObject<OPEN_AUTH_CLIENT>(json);
-                        result = this._gooDriver.f_get_userInfoOrCreateNewIfNotExist(clientCredentials);
-                    }
-                    break;
-                case "/GET_RETRIEVE_ALL_FILES":
-                    content_type = "application/json; charset=utf-8";
-                    result = this._gooDriver.f_get_retrieveAllFiles();
-                    break;
-                default:
-                    result = DateTime.Now.ToString();
-                    break;
+                switch (context.Request.Url.LocalPath)
+                {
+                    case "/favicon.ico":
+                        break;
+                    ///////////////////////////////////////////////////////////////////
+                    // GET
+                    case "/GET_USER_INFO":
+                        result = this._gooDriver.f_get_userInfo();
+                        break;
+                    case "/GET_RETRIEVE_ALL_FILES":
+                        result = this._gooDriver.f_get_retrieveAllFiles();
+                        break;
+                    case "/GET_FILE":
+                        file_id = context.Request.QueryString["file_id"];
+                        result = this._gooDriver.f_downloadFile(file_id);
+                        break;
+                    ///////////////////////////////////////////////////////////////////
+                    // POST
+                    case "/POST_CREATE_TOKEN_NEW":
+                        buf = ReadFully(context.Request.InputStream);
+                        if (buf.Length > 0)
+                        {
+                            string json = Encoding.UTF8.GetString(buf);
+                            OPEN_AUTH_CLIENT clientCredentials = JsonConvert.DeserializeObject<OPEN_AUTH_CLIENT>(json);
+                            result = this._gooDriver.f_create_TokenNew(clientCredentials);
+                        }
+                        else result = JsonConvert.SerializeObject(new { Ok = false, Message = "The data to POST must be not null" });
+                        break;
+                    case "/POST_GET_USER_INFO_OR_CREATE_NEW_IF_NOT_EXIST":
+                        buf = ReadFully(context.Request.InputStream);
+                        if (buf.Length > 0)
+                        {
+                            string json = Encoding.UTF8.GetString(buf);
+                            OPEN_AUTH_CLIENT clientCredentials = JsonConvert.DeserializeObject<OPEN_AUTH_CLIENT>(json);
+                            result = this._gooDriver.f_get_userInfoOrCreateNewIfNotExist(clientCredentials);
+                        }
+                        else result = JsonConvert.SerializeObject(new { Ok = false, Message = "The data to POST must be not null" });
+                        break;
+                    case "/POST_UPLOAD_FILE":
+                        buf = ReadFully(context.Request.InputStream);
+                        if (buf.Length > 0)
+                        {
+                            string json = Encoding.UTF8.GetString(buf);
+                            DriveFile df = JsonConvert.DeserializeObject<DriveFile>(json);
+                            result = this._gooDriver.f_uploadFile(df);
+                        }
+                        else result = JsonConvert.SerializeObject(new { Ok = false, Message = "The data to POST must be not null" });
+                        break;
+                    case "/POST_UPDATE_FILE":
+                        buf = ReadFully(context.Request.InputStream);
+                        if (buf.Length > 0)
+                        {
+                            string json = Encoding.UTF8.GetString(buf);
+                            DriveFile df = JsonConvert.DeserializeObject<DriveFile>(json);
+                            result = this._gooDriver.f_updateFile(df);
+                        }
+                        break;
+                }
             }
+            catch (Exception e) { result = JsonConvert.SerializeObject(new { Ok = false, Message = e.Message }); }
 
-            bOutput = Encoding.UTF8.GetBytes(result);
-            Response.ContentType = content_type;
-            Response.ContentLength64 = bOutput.Length;
-            OutputStream.Write(bOutput, 0, bOutput.Length);
-            OutputStream.Close();
+            byte[] bOutput = Encoding.UTF8.GetBytes(result);
+            context.Response.ContentType = content_type;
+            context.Response.ContentLength64 = bOutput.Length;
+            context.Response.OutputStream.Write(bOutput, 0, bOutput.Length);
+            context.Response.OutputStream.Close();
         }
 
 
@@ -79,7 +110,7 @@ namespace System
         {
             try
             {
-                int bytesBuffer = 1024;
+                int bytesBuffer = 1024 * 1024;
                 byte[] buffer = new byte[bytesBuffer];
                 using (MemoryStream ms = new MemoryStream())
                 {
