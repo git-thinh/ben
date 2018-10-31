@@ -1,4 +1,13 @@
+npm install express --save
+npm install ws --save
+npm install lodash --save
+npm install protobufjs --save
 
+npm install googleapis --save
+
+-----------------------------------------------------------------------
+
+https://developers.google.com/drive/api/v3/quickstart/nodejs?refresh=1
 https://www.npmjs.com/package/ps-node
 https://nodejs.org/api/child_process.html#child_process_child_process_execfile_file_args_options_callback
 
@@ -28,10 +37,8 @@ $ npm init
 $ npm install --save grpc @grpc/proto-loader
 
 -----------------------------------------------------------------------
-npm install --save express
-npm install --save ws
+
+
 npm install --save underscore
-npm install --save lodash
 npm install --save grpc-caller
 npm install --save grpc-client
-npm install protobufjs [--save --save-prefix=~]
