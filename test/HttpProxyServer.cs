@@ -67,18 +67,22 @@ namespace System
             {
                 case "/favicon.ico":
                     break;
-                case "/nodejs":                    
-                    byte[] buf = ReadFully(Request.InputStream);
-                    if (buf.Length > 0)
+                case "/nodejs":
+                    using (var binaryReader = new BinaryReader(Request.InputStream))
                     {
-                        using (CodedInputStream input = new CodedInputStream(buf, 0, buf.Length))
+                        byte[] buf = binaryReader.ReadBytes((int)Request.InputStream.Length);
+                        //byte[] buf = ReadFully(Request.InputStream);
+                        if (buf.Length > 0)
                         {
-                            try
+                            using (CodedInputStream input = new CodedInputStream(buf, 0, buf.Length))
                             {
-                                var l2 = Message.Parser.ParseFrom(input);
-                            }
-                            catch (Exception ex)
-                            {
+                                try
+                                {
+                                    var l2 = Message.Parser.ParseFrom(input);
+                                }
+                                catch (Exception ex)
+                                {
+                                }
                             }
                         }
                     }
@@ -94,6 +98,6 @@ namespace System
             OutputStream.Write(bOutput, 0, bOutput.Length);
             OutputStream.Close();
         }
-        
+
     }
 }
