@@ -3,3 +3,4 @@ C:\ben\build2\apigd\apigd.pdb
 C:\ben\apigd\obj\Debug\apigd.csproj.CoreCompileInputs.cache
 C:\ben\apigd\obj\Debug\apigd.exe
 C:\ben\apigd\obj\Debug\apigd.pdb
+C:\ben\apigd\obj\Debug\apigd.csprojResolveAssemblyReference.cache

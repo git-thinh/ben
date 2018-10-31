@@ -5,6 +5,7 @@ using Google.Apis.Authentication;
 using Google.Apis.Authentication.OAuth2;
 using Google.Apis.Authentication.OAuth2.DotNetOpenAuth;
 using Google.Apis.Drive.v2;
+using Google.Apis.Drive.v2.Data;
 using Google.Apis.Oauth2.v2;
 using Google.Apis.Oauth2.v2.Data;
 using Newtonsoft.Json;
@@ -31,6 +32,7 @@ namespace apigd
         DriveService f_get_DriveService(DriveService sv);
         string f_get_userInfoOrCreateNewIfNotExist(OPEN_AUTH_CLIENT clientCredentials);
         string f_create_TokenNew(OPEN_AUTH_CLIENT clientCredentials);
+        string f_get_retrieveAllFiles();
     }
 
     public class GooDriver : IGooDriver
@@ -61,13 +63,12 @@ namespace apigd
 
         public string f_get_userInfoOrCreateNewIfNotExist(OPEN_AUTH_CLIENT clientCredentials)
         {
-            if(clientCredentials == null || string.IsNullOrEmpty(clientCredentials.CODE_AUTH_CLIENT))
+            if((this._authenticator == null || this._driveService == null) && (clientCredentials == null || string.IsNullOrEmpty(clientCredentials.CODE_AUTH_CLIENT)))
                 return JsonConvert.SerializeObject(new { Ok = false, Message = "CODE_AUTH_CLIENT must be not null" });
 
             IAuthenticator auth = null;
             DriveService service = null;
-
-
+            
             if (this._authenticator == null || this._driveService == null)
             {
                 auth = GetCredentials(clientCredentials);
@@ -94,6 +95,37 @@ namespace apigd
         public DriveService f_get_DriveService(DriveService sv)
         {
             return this._driveService;
+        }
+
+        /// <summary>
+        /// Retrieve a list of File resources.
+        /// </summary>
+        /// <param name="service">Drive API service instance.</param>
+        /// <returns>List of File resources.</returns>
+        public string f_get_retrieveAllFiles()
+        {
+            if (this._authenticator == null || this._driveService == null)
+                return JsonConvert.SerializeObject(new { Ok = false, Message = "redirect user to authentication" });
+
+            List<File> result = new List<File>();
+            FilesResource.ListRequest request = this._driveService.Files.List();
+            do
+            {
+                try
+                {
+                    FileList files = request.Fetch();
+
+                    result.AddRange(files.Items);
+                    request.PageToken = files.NextPageToken;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("An error occurred: " + e.Message);
+                    request.PageToken = null;
+                }
+            } while (!String.IsNullOrEmpty(request.PageToken));
+
+            return JsonConvert.SerializeObject(new { Ok = true, Data = result });
         }
 
         string f_get_userInfo()

@@ -49,6 +49,7 @@ namespace System
                 case "/favicon.ico":
                     break;
                 case "/GET_USER_INFO_OR_CREATE_NEW_IF_NOT_EXIST":
+                    content_type = "application/json; charset=utf-8";
                     byte[] buf = ReadFully(Request.InputStream);
                     if (buf.Length > 0)
                     {
@@ -56,6 +57,10 @@ namespace System
                         OPEN_AUTH_CLIENT clientCredentials = JsonConvert.DeserializeObject<OPEN_AUTH_CLIENT>(json);
                         result = this._gooDriver.f_get_userInfoOrCreateNewIfNotExist(clientCredentials);
                     }
+                    break;
+                case "/GET_RETRIEVE_ALL_FILES":
+                    content_type = "application/json; charset=utf-8";
+                    result = this._gooDriver.f_get_retrieveAllFiles();
                     break;
                 default:
                     result = DateTime.Now.ToString();
