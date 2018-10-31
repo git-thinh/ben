@@ -36,6 +36,7 @@ app.use(bodyParser.json());
 /////////////////////////////////////////////////////////////////////////
 const _URL = {
     get_token: 'http://localhost:' + _PORT + '/get_token',
+    get_info: 'http://localhost:' + _PORT + '/get_info',
     get_files: 'http://localhost:' + _PORT + '/get_files'
 };
 
@@ -56,29 +57,27 @@ app.get('/', function (req, res) {
     }
 });
 
+app.get('/get_info', (req, res) => res.json(_CONFIG));
+
 const _fet_GET_USER_INFO_OR_CREATE_NEW_IF_NOT_EXIST = async (req, res, next) => {
-    console.log('GET_TOKEN: BEGIN ...')
-    req.data = await fetch('http://localhost:3399/GET_USER_INFO_OR_CREATE_NEW_IF_NOT_EXIST', { method: 'POST', body: JSON.stringify(_CONFIG) }).then(res => res.json());
-    console.log('GET_TOKEN: END ...')
+    var data = await fetch(_CONFIG.HOST_API + '/GET_USER_INFO_OR_CREATE_NEW_IF_NOT_EXIST', { method: 'POST', body: JSON.stringify(_CONFIG) }).then(res => res.json());
+    _CONFIG.USER_INFO = data;
+    req.data = data;
+    req.data.urls = _URL;
     next();
 };
-app.get('/get_token', _fet_GET_USER_INFO_OR_CREATE_NEW_IF_NOT_EXIST, ({ data }, res) => {
-    res.json({
-        config: _CONFIG,
-        service: data,
-        urls: _URL,
-        time: new Date().toString()
-    });
-});
+app.get('/get_token', _fet_GET_USER_INFO_OR_CREATE_NEW_IF_NOT_EXIST, ({ data }, res) => res.json(_CONFIG));
 
 const _fet_GET_RETRIEVE_ALL_FILES = async (req, res, next) => {
-    req.data = await fetch('http://localhost:3399/GET_RETRIEVE_ALL_FILES').then(res => res.json());
+    req.data = await fetch(_CONFIG.HOST_API + '/GET_RETRIEVE_ALL_FILES').then(res => res.json());
     req.data.urls = _URL;
     next();
 };
 app.get('/get_files', _fet_GET_RETRIEVE_ALL_FILES, ({ data }, res) => res.json(data));
 /////////////////////////////////////////////////////////////////////////
 const _CONFIG = {
+    HOST_API: 'http://localhost:3399',
+    URLS: _URL,
     CLIENT_ID: "962642037870-u8gg10odivorhmn19o3qqq9hlbmtras3.apps.googleusercontent.com",
     CLIENT_SECRET: "x8FbmONjiC3GN7lSPvyPwgG2",
     SCOPES: [
@@ -93,6 +92,7 @@ const _CONFIG = {
     ],
     REDIRECT_URI: "http://localhost:61422/",
     CODE_AUTH_CLIENT: '',
+    USER_INFO: {}
 }
 const { google } = require('googleapis');
 /////////////////////////////////////////////////////////////////////////

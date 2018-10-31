@@ -96,12 +96,7 @@ namespace apigd
         {
             return this._driveService;
         }
-
-        /// <summary>
-        /// Retrieve a list of File resources.
-        /// </summary>
-        /// <param name="service">Drive API service instance.</param>
-        /// <returns>List of File resources.</returns>
+        
         public string f_get_retrieveAllFiles()
         {
             if (this._authenticator == null || this._driveService == null)
