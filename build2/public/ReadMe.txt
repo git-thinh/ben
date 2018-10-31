@@ -4,8 +4,12 @@ npm install lodash --save
 npm install protobufjs --save
 
 npm install googleapis --save
+npm install axios --save
+npm install node-fetch --save
 
 -----------------------------------------------------------------------
+https://flaviocopes.com/axios/
+https://codeburst.io/node-express-async-code-and-error-handling-121b1f0e44ba
 
 https://developers.google.com/drive/api/v3/quickstart/nodejs?refresh=1
 https://www.npmjs.com/package/ps-node

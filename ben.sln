@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ben", "ben\ben.csproj", "{22B3B97E-3C29-4278-BD1D-74F9EBE706A2}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test", "test\test.csproj", "{AD2E9AD8-03E0-4E99-AB72-DA9226E2612E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Google.Protobuf", "libs\Google.Protobuf\Google.Protobuf.csproj", "{07E556C5-B00D-45EE-85B5-F8A9C6285162}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "apigd", "apigd\apigd.csproj", "{2C8C4625-F511-4C5F-A63D-0B4D17880E8A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,11 +65,20 @@ Global
 		{07E556C5-B00D-45EE-85B5-F8A9C6285162}.Release|Any CPU.Build.0 = Release|Any CPU
 		{07E556C5-B00D-45EE-85B5-F8A9C6285162}.Release|x86.ActiveCfg = Release|Any CPU
 		{07E556C5-B00D-45EE-85B5-F8A9C6285162}.Release|x86.Build.0 = Release|Any CPU
+		{2C8C4625-F511-4C5F-A63D-0B4D17880E8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C8C4625-F511-4C5F-A63D-0B4D17880E8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C8C4625-F511-4C5F-A63D-0B4D17880E8A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2C8C4625-F511-4C5F-A63D-0B4D17880E8A}.Debug|x86.Build.0 = Debug|Any CPU
+		{2C8C4625-F511-4C5F-A63D-0B4D17880E8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C8C4625-F511-4C5F-A63D-0B4D17880E8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C8C4625-F511-4C5F-A63D-0B4D17880E8A}.Release|x86.ActiveCfg = Release|Any CPU
+		{2C8C4625-F511-4C5F-A63D-0B4D17880E8A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{22B3B97E-3C29-4278-BD1D-74F9EBE706A2} = {0F536897-5832-4A49-BBD5-ECE97C74F9AD}
 		{9C2FE0B5-3369-4689-BC73-42865B8E71E7} = {0F536897-5832-4A49-BBD5-ECE97C74F9AD}
 		{2FE79DCE-C88F-423D-8B1B-FF9EE59E189E} = {0F536897-5832-4A49-BBD5-ECE97C74F9AD}
 		{AD2E9AD8-03E0-4E99-AB72-DA9226E2612E} = {0F536897-5832-4A49-BBD5-ECE97C74F9AD}
