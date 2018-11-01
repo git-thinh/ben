@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{52F1E73B-EAA5-4BDB-912D-A13C0350CB62}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>browser</RootNamespace>
+    <AssemblyName>browser</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\build2\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CefSharp">
+      <HintPath>..\dll\CefSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="CefSharp.WinForms, Version=1.25.0.25471, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dll\CefSharp.WinForms.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dll\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <HintPath>..\dll\System.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ControlTransparent.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gma.System.MouseKeyHook\Combination.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\Hook.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\HotKeys\HotKeyArgs.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\HotKeys\HotKeySet.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\HotKeys\HotKeySetCollection.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\HotKeys\HotKeySetsListener.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\IKeyboardEvents.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\IKeyboardMouseEvents.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\IMouseEvents.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\Implementation\AppEventFacade.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\Implementation\AppKeyListener.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\Implementation\AppMouseListener.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\Implementation\BaseListener.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\Implementation\ButtonSet.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\Implementation\Callback.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\Implementation\Chord.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\Implementation\EventFacade.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\Implementation\GlobalEventFacade.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\Implementation\GlobalKeyListener.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\Implementation\GlobalMouseListener.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\Implementation\KeyboardState.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\Implementation\KeyListener.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\Implementation\KeysExtensions.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\Implementation\MouseListener.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\Implementation\Subscribe.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\KeyCombinationExtensions.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\KeyEventArgsExt.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\KeyPressEventArgsExt.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\MouseEventExtArgs.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\Sequence.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\SequenceBase.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\WinApi\AppMouseStruct.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\WinApi\CallbackData.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\WinApi\HookHelper.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\WinApi\HookIds.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\WinApi\HookNativeMethods.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\WinApi\HookProcedure.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\WinApi\HookProcedureHandle.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\WinApi\HookResult.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\WinApi\HotkeysNativeMethods.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\WinApi\KeyboardHookStruct.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\WinApi\KeyboardNativeMethods.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\WinApi\Messages.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\WinApi\MouseNativeMethods.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\WinApi\MouseStruct.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\WinApi\Point.cs" />
+    <Compile Include="Gma.System.MouseKeyHook\WinApi\ThreadNativeMethods.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Gma.System.MouseKeyHook\HotKeys\ReadMe.txt" />
+    <Content Include="icon.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

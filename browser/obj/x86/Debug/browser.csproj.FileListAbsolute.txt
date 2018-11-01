@@ -1,0 +1,8 @@
+C:\ben\build2\browser.exe
+C:\ben\build2\browser.pdb
+C:\ben\browser\obj\x86\Debug\browser.csproj.CoreCompileInputs.cache
+C:\ben\browser\obj\x86\Debug\browser.exe
+C:\ben\browser\obj\x86\Debug\browser.pdb
+C:\ben\browser\obj\x86\Debug\browser.Properties.Resources.resources
+C:\ben\browser\obj\x86\Debug\browser.csproj.GenerateResource.Cache
+C:\ben\browser\obj\x86\Debug\browser.csprojResolveAssemblyReference.cache

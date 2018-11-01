@@ -20,3 +20,8 @@ build/bin/components/compreg.dat
 /test/obj
 .vs/ben/v14/.suo
 /build2/node_modules
+browser/.vs/browser/v15/Server/sqlite3/db.lock
+browser/.vs/browser/v15/Server/sqlite3/storage.ide
+browser/.vs/browser/v15/Server/sqlite3/storage.ide-shm
+browser/.vs/browser/v15/Server/sqlite3/storage.ide-wal
+browser/.vs/browser/v15/.suo
