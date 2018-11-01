@@ -2,3 +2,7 @@
 [1101/102526:INFO:CONSOLE(0)] "Deprecation warning: moment construction falls back to js Date. This is discouraged and will be removed in upcoming major release. Please refer to https://github.com/moment/moment/issues/1407 for more info.," source: http://localhost/flatkit/libs/js/moment/moment.js(326)
 [1101/105822:INFO:CONSOLE(0)] "Google Maps JavaScript API warning: NoApiKeys https://developers.google.com/maps/documentation/javascript/error-messages#no-api-keys," source: http://maps.google.com/maps-api-v3/api/js/34/16/util.js(224)
 [1101/105822:INFO:CONSOLE(0)] "Google Maps JavaScript API warning: SensorNotRequired https://developers.google.com/maps/documentation/javascript/error-messages#sensor-not-required," source: http://maps.google.com/maps-api-v3/api/js/34/16/util.js(224)
+[1101/114854:INFO:CONSOLE(0)] "Unsafe JavaScript attempt to access frame with URL http://localhost/Altair-Admin-Template/altair_v2.2.0/admin/html/dist/ from frame with URL https://www.youtube.com/embed/-CYs99M7hzA?rel=0. Domains, protocols and ports must match.
+," source: (1)
+[1101/114854:INFO:CONSOLE(0)] "Google Maps JavaScript API warning: NoApiKeys https://developers.google.com/maps/documentation/javascript/error-messages#no-api-keys," source: http://maps.google.com/maps-api-v3/api/js/34/16/util.js(224)
+[1101/114854:INFO:CONSOLE(0)] "Google Maps JavaScript API warning: SensorNotRequired https://developers.google.com/maps/documentation/javascript/error-messages#sensor-not-required," source: http://maps.google.com/maps-api-v3/api/js/34/16/util.js(224)
