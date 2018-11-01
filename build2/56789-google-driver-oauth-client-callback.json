@@ -1,0 +1,12 @@
+{
+  "web": {
+    "client_id": "391369260337-ibhd81055km6v96jj6qjgo75k3ts4bfl.apps.googleusercontent.com",
+    "project_id": "nodejs-221201",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://www.googleapis.com/oauth2/v3/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_secret": "CfiVD1pWACRxOksZ3-WFToti",
+    "redirect_uris": [ "http://localhost:56789/google-driver-oauth-client-callback" ],
+    "javascript_origins": [ "http://localhost:56789" ]
+  }
+}

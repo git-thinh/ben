@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////
 // VARIABLE
-const _PORT = 61422;
+const _PORT = 56789; //61422
 /////////////////////////////////////////////////////////////////////////
 // CONTRACTOR
 const fetch = require('node-fetch');
@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
-//app.use(express.static('public'));
+app.use(express.static('public'));
 /////////////////////////////////////////////////////////////////////////
 
 const _GOO_DRIVER_API_URL = {
@@ -52,11 +52,28 @@ const _URL = {
 };
 
 app.get('/', function (req, res) {
+    //var code = req.query.code;
+    //if (code == null) {
+    //    const _OPEN_AUTH_CLIENT = new google.auth.OAuth2(_CONFIG.CLIENT_ID, _CONFIG.CLIENT_SECRET, _CONFIG.REDIRECT_URI);
+    //    const url_oauthcallback = _OPEN_AUTH_CLIENT.generateAuthUrl({ access_type: 'offline', scope: _CONFIG.SCOPES });
+    //    res.redirect(url_oauthcallback);
+    //} else {
+    //    _CONFIG.CODE_AUTH_CLIENT = code;
+    //    res.redirect('/get_token');
+    //}
+    res.json({ time: new Date().toString() });
+});
+
+app.get('/google-driver-login', function (req, res) {
+    const _OPEN_AUTH_CLIENT = new google.auth.OAuth2(_CONFIG.CLIENT_ID, _CONFIG.CLIENT_SECRET, _CONFIG.REDIRECT_URI);
+    const url_oauthcallback = _OPEN_AUTH_CLIENT.generateAuthUrl({ access_type: 'offline', scope: _CONFIG.SCOPES });
+    res.redirect(url_oauthcallback);
+});
+
+app.get('/google-driver-oauth-client-callback', function (req, res) {
     var code = req.query.code;
     if (code == null) {
-        const _OPEN_AUTH_CLIENT = new google.auth.OAuth2(_CONFIG.CLIENT_ID, _CONFIG.CLIENT_SECRET, _CONFIG.REDIRECT_URI);
-        const url_oauthcallback = _OPEN_AUTH_CLIENT.generateAuthUrl({ access_type: 'offline', scope: _CONFIG.SCOPES });
-        res.redirect(url_oauthcallback);
+        res.redirect('/google-driver-login');
     } else {
         _CONFIG.CODE_AUTH_CLIENT = code;
         res.redirect('/get_token');
@@ -83,19 +100,23 @@ app.get('/get_files', _fet_GET_RETRIEVE_ALL_FILES, ({ data }, res) => res.json(d
 /////////////////////////////////////////////////////////////////////////
 const _CONFIG = { 
     URLS: _URL,
-    CLIENT_ID: "962642037870-u8gg10odivorhmn19o3qqq9hlbmtras3.apps.googleusercontent.com",
-    CLIENT_SECRET: "x8FbmONjiC3GN7lSPvyPwgG2",
+    PROJECT_ID: 'nodejs-221201',
+    CLIENT_ID: '391369260337-ibhd81055km6v96jj6qjgo75k3ts4bfl.apps.googleusercontent.com',
+    CLIENT_SECRET: 'CfiVD1pWACRxOksZ3-WFToti',
+    REDIRECT_URI: 'http://localhost:56789/google-driver-oauth-client-callback',
+    //CLIENT_ID: '962642037870-u8gg10odivorhmn19o3qqq9hlbmtras3.apps.googleusercontent.com',
+    //CLIENT_SECRET: 'x8FbmONjiC3GN7lSPvyPwgG2',
+    //REDIRECT_URI: 'http://localhost:61422/',
     SCOPES: [
-        "https://www.googleapis.com/auth/drive.file",
-        "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/userinfo.profile",
-        "https://www.googleapis.com/auth/drive.install"
+        'https://www.googleapis.com/auth/drive.file',
+        'https://www.googleapis.com/auth/userinfo.email',
+        'https://www.googleapis.com/auth/userinfo.profile',
+        'https://www.googleapis.com/auth/drive.install'
         //'https://www.googleapis.com/auth/drive'
         //'https://www.googleapis.com/auth/plus.me',
         //'https://www.googleapis.com/auth/calendar'
         //'https://www.googleapis.com/auth/drive.metadata.readonly'
     ],
-    REDIRECT_URI: "http://localhost:61422/",
     CODE_AUTH_CLIENT: '',
     USER_INFO: {}
 }
