@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html ng-app="altairApp" document-events ng-click="onClick($event)" ng-keyup="onKeyUp($event)" ng-class="{ 'page_loading': pageLoading, 'page_loaded': pageLoaded, 'app_initialized': appInitialized && (!$state.is('login') && !$state.includes('error'))}">
 <head>
     <meta charset="UTF-8">
@@ -53,6 +53,23 @@
 
     <!-- main stylesheet -->
     <link rel="stylesheet" href="assets/css/main.min.css" media="all" id="main_stylesheet">
+    <style>
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: none;
+            border-radius: 0px;
+            background-color: #fafafa;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            border-radius: 0px;
+            -webkit-box-shadow: none;
+            background-color: #ccc;
+        }
+    </style>
 </head>
 <body class="{{main_theme}}" data-uk-observe ng-class="{
     'sidebar_main_active': primarySidebarActive && !miniSidebarActive && !topMenuActive && (!$state.is('login') && !$state.includes('error')),
