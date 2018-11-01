@@ -3,8 +3,8 @@ using Gma.System.MouseKeyHook;
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Windows.Forms; 
-using CefSharp.WinForms; 
+using System.Windows.Forms;
+using CefSharp.WinForms;
 
 namespace browser
 {
@@ -21,6 +21,8 @@ namespace browser
 
     class fMain : Form
     {
+        const int _SIZE_BOX = 12;
+
         readonly WebView ui_browser;
         const bool m_hook_MouseMove = true;
         bool m_resizing = false;
@@ -208,9 +210,8 @@ namespace browser
 
         /*////////////////////////////////////////////////////////////////////////*/
 
-
         public fMain()
-        { 
+        {
             this.Icon = browser.Properties.Resources.icon;
             this.FormBorderStyle = FormBorderStyle.None;
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -219,18 +220,36 @@ namespace browser
             {
                 Location = new Point(0, 0),
                 BackColor = Color.Transparent,
-                //BackColor = Color.Orange,
                 Height = 45,
-                Width = 99
+                Width = 99,
+                Visible = false,
             };
             this.Controls.Add(ui_move);
             ui_move.MouseMove += f_form_move_MouseDown;
-            
+            ui_move.MouseDoubleClick += (se, ev) =>
+            {
+                if (this.Width != Screen.PrimaryScreen.WorkingArea.Width)
+                {
+                    this.Tag = this.Width;
+                    this.Width = Screen.PrimaryScreen.WorkingArea.Width;
+                    this.Height = Screen.PrimaryScreen.WorkingArea.Height;
+                    this.Left = 0;
+                    this.Top = 0;
+                }
+                else
+                {
+                    this.Height = Screen.PrimaryScreen.WorkingArea.Height - 27;
+                    this.Top = 27;
+                    this.Width = (int)this.Tag;
+                    this.Left = Screen.PrimaryScreen.WorkingArea.Width - this.Width;
+                }
+            };
+
             var ui_resize = new Label()
             {
                 Text = string.Empty,
-                Width = 15,
-                Height = 15,
+                Width = _SIZE_BOX,
+                Height = _SIZE_BOX,
                 BackColor = Color.Transparent,
             };
             this.Controls.Add(ui_resize);
@@ -242,84 +261,77 @@ namespace browser
                 f_hook_mouse_Close();
             };
 
-            var ui_close = new Label() {
-                Width = 17, Height = 17,
+            var ui_close = new Label()
+            {
+                Width = _SIZE_BOX,
+                Height = 48,
                 TextAlign = ContentAlignment.MiddleCenter,
                 Text = string.Empty,
-                BackColor = Color.Orange,
+                BackColor = Color.DodgerBlue,
             };
             this.Controls.Add(ui_close);
             ui_close.MouseDoubleClick += (se, ev) => this.Close();
             ui_close.MouseMove += f_form_move_MouseDown;
 
-            ui_browser = new WebView("about:blank", new BrowserSettings() {
+            ui_browser = new WebView("about:blank", new BrowserSettings()
+            {
                 PageCacheDisabled = true,
                 WebSecurityDisabled = true,
                 ApplicationCacheDisabled = true
             });
-            ui_browser.Dock = DockStyle.Fill;
+            ui_browser.PropertyChanged += (sei, evi) => { if (evi.PropertyName == "IsBrowserInitialized") ui_browser.Load("http://localhost:56789/chrome25.html"); };
             this.Controls.Add(ui_browser);
             ui_browser.MenuHandler = new MenuHandler();
 
-
-            
             ContextMenuStrip myMenu = new ContextMenuStrip();
-            this.ContextMenuStrip = myMenu; 
+            this.ContextMenuStrip = myMenu;
             myMenu.Items.Add("Reload Page");
-            myMenu.Items.Add("Show DevTools");
             myMenu.Items.Add("Go Url");
+            myMenu.Items.Add(new ToolStripSeparator());
+            myMenu.Items.Add("Always Top");
+            myMenu.Items.Add("Minimize In TaskBar");
+            myMenu.Items.Add("Show DevTools");
+            ToolStripMenuItem mySubMenu = new ToolStripMenuItem("Set Width Window");
+            mySubMenu.DropDownItems.Add("Width = 480");
+            mySubMenu.DropDownItems.Add("Width = 600");
+            mySubMenu.DropDownItems.Add("Width = 800");
+            mySubMenu.DropDownItems.Add("Width = 999");
+            mySubMenu.DropDownItems.Add("Width = 1024");
+            mySubMenu.DropDownItems.Add("Width = 1366");
+            mySubMenu.DropDownItems.Add("Full Screen");
+            mySubMenu.DropDownItemClicked += (se, ev) => f_menuItem_Click(ev.ClickedItem.Text);
+            myMenu.Items.Add(mySubMenu);
+            myMenu.Items.Add(new ToolStripSeparator());
+            myMenu.Items.Add("Close Menu");
+            myMenu.Items.Add("Exit Program");
+            myMenu.ItemClicked += (se, ev) => f_menuItem_Click(ev.ClickedItem.Text);
 
-            myMenu.Items[0].Click += new EventHandler(f_menuContext_Click);
-            myMenu.Items[1].Click += new EventHandler(f_menuContext_Click);
-            myMenu.Items[2].Click += new EventHandler(f_menuContext_Click);
-
-            //myMenu.Items.Add("Form Info2"); // add some items to the menu
-            //// create item with submenus Item1 and Item2
-            //ToolStripMenuItem mySubMenu = new ToolStripMenuItem();
-            //mySubMenu.Text = "InfoMenu1";
-            //ToolStripMenuItem myItem = new ToolStripMenuItem();
-            //myItem.Text = "Item1";
-            ////myItem.Click += new EventHandler(Item1_Menu_Click);
-            //mySubMenu.DropDownItems.Add(myItem);
-            //myItem = new ToolStripMenuItem(); //reuse of name
-            //myItem.Text = "Item2";
-            //mySubMenu.DropDownItems.Add(myItem);
-            //myMenu.Items.Add(mySubMenu);
-            //// further menu items can be added etc.
-            //myMenu.Items.Add("Form close");
-            ////fourth item added so index here is 3
-            ////myMenu.Items[3].Click += new EventHandler(FormCloseMenu_Click);
-
-
-
-            this.Shown += (se, ev) => {
+            this.Shown += (se, ev) =>
+            {
                 this.Width = 999;
-                this.Height = Screen.PrimaryScreen.WorkingArea.Height - 100;
-                this.Top = 45;
+                this.Height = Screen.PrimaryScreen.WorkingArea.Height - 27;
+                this.Top = 27;
                 this.Left = Screen.PrimaryScreen.WorkingArea.Width - this.Width;
 
-                ui_close.Location = new Point(this.Width - 17, 0);
+                ui_close.Location = new Point(this.Width - _SIZE_BOX, 0);
                 ui_close.Anchor = AnchorStyles.Top | AnchorStyles.Right;
 
                 ui_move.Width = this.Width - (123 + 320);
                 ui_move.Height = 48;
                 ui_move.Location = new Point(123, 0);
                 ui_move.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-                            
-                ui_resize.Location = new Point(this.Width - 15, this.Height - 15);
+
+                ui_resize.Location = new Point(this.Width - _SIZE_BOX, this.Height - _SIZE_BOX);
                 ui_resize.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
 
-                ui_resize.BringToFront();
-                ui_move.BringToFront();
-                ui_close.BringToFront();
+                ui_browser.Dock = DockStyle.Fill;
+                ui_browser.SendToBack();
             };
         }
 
-        private void f_menuContext_Click(object sender, EventArgs e)
+        private void f_menuItem_Click(string menu_name)
         {
-            ToolStripMenuItem m = (ToolStripMenuItem)sender;
-            //MessageBox.Show(m.Text);
-            switch (m.Text)
+            switch (menu_name)
             {
                 case "Reload Page":
                     this.ui_browser.Stop();
@@ -329,13 +341,62 @@ namespace browser
                     this.ui_browser.ShowDevTools();
                     break;
                 case "Go Url":
-                    string url = Microsoft.VisualBasic.Interaction.InputBox("Input URL:", "Go page", "http://localhost:56789/");
+                    string url = Microsoft.VisualBasic.Interaction.InputBox("Input URL:", "Go page", "http://");
                     Uri u;
                     if (Uri.TryCreate(url, UriKind.Absolute, out u))
                     {
                         this.ui_browser.Stop();
                         this.ui_browser.Load(url);
                     }
+                    break;
+                case "Width = 480":
+                    this.Width = 480;
+                    this.Left = Screen.PrimaryScreen.WorkingArea.Width - this.Width;
+                    break;
+                case "Width = 600":
+                    this.Width = 600;
+                    this.Left = Screen.PrimaryScreen.WorkingArea.Width - this.Width;
+                    break;
+                case "Width = 800":
+                    this.Width = 800;
+                    this.Left = Screen.PrimaryScreen.WorkingArea.Width - this.Width;
+                    break;
+                case "Width = 999":
+                    this.Width = 999;
+                    this.Left = Screen.PrimaryScreen.WorkingArea.Width - this.Width;
+                    break;
+                case "Width = 1024":
+                    this.Width = 1024;
+                    this.Left = Screen.PrimaryScreen.WorkingArea.Width - this.Width;
+                    break;
+                case "Width = 1366":
+                    this.Width = 1366;
+                    this.Left = Screen.PrimaryScreen.WorkingArea.Width - this.Width;
+                    break;
+                case "Full Screen":
+                    this.Tag = this.Width;
+                    this.Width = Screen.PrimaryScreen.WorkingArea.Width;
+                    this.Height = Screen.PrimaryScreen.WorkingArea.Height;
+                    this.Left = 0;
+                    this.Top = 0;
+                    break;
+                case "Always Top":
+                    if (this.TopMost)
+                    {
+                        this.TopMost = false;
+                        this.WindowState = FormWindowState.Minimized;
+                    }
+                    else
+                        this.TopMost = true;
+                    break;
+                case "Minimize In TaskBar":
+                    this.ContextMenuStrip.Hide();
+                    this.WindowState = FormWindowState.Minimized;
+                    break;
+                case "Close Menu":
+                    break;
+                case "Exit Program":
+                    this.Close();
                     break;
             }
         }
@@ -348,6 +409,4 @@ namespace browser
             return true;
         }
     }
-
-
 }
