@@ -19,3 +19,4 @@ build/bin/components/compreg.dat
 /test/bin
 /test/obj
 .vs/ben/v14/.suo
+/build2/node_modules
