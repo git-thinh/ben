@@ -1,14 +1,15 @@
 ﻿<div id="nav-left">
     <div id="search">
         <!--<input placeholder="Search ..." type="text" />-->
-        <i class="fa fa-user"></i>
+        <i onclick="f_user_toggleClick()" class="fa fa-user"></i>
     </div>
     <div id="tree">
         <ul>
             <li data-jstree='{"selected":true,"icon":"icon-basic-home"}'>Home</li>
-            <li data-jstree='{"opened":false,"icon":"icon-basic-gear"}'>
+            <li data-jstree='{"opened":true,"icon":"icon-basic-gear"}'>
                 Setting
                 <ul>
+                    <li data-jstree='{"icon":"icon-basic-cloud"}'>Cloud</li>
                     <li data-jstree='{"icon":"icon-basic-server2"}'>Database</li>
                     <li data-jstree='{"icon":"fa fa-wrench"}'>Database</li>
                     <li data-jstree='{"icon":"icon-basic-case"}'>Bag</li>
