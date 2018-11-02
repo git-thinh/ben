@@ -263,11 +263,12 @@ namespace browser
 
             var ui_close = new Label()
             {
-                Width = _SIZE_BOX,
-                Height = _SIZE_BOX,
+                Location = new Point(0,0),
+                Width = 9,
+                Height = 9,
                 TextAlign = ContentAlignment.MiddleCenter,
                 Text = string.Empty,
-                BackColor = Color.DodgerBlue,
+                BackColor = Color.LightGray,
             };
             this.Controls.Add(ui_close);
             ui_close.MouseDoubleClick += (se, ev) => this.Close();
@@ -314,8 +315,8 @@ namespace browser
                 this.Top = Screen.PrimaryScreen.WorkingArea.Height - this.Height;
                 this.Left = 0;// Screen.PrimaryScreen.WorkingArea.Width - this.Width;
 
-                ui_close.Location = new Point(this.Width - _SIZE_BOX, 0);
-                ui_close.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                //ui_close.Location = new Point(this.Width - _SIZE_BOX, 0);
+                //ui_close.Anchor = AnchorStyles.Top | AnchorStyles.Right;
 
                 ui_move.Width = this.Width - (123 + 320);
                 ui_move.Height = 48;

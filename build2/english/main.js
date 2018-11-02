@@ -11,19 +11,46 @@ var _config = {
             { type: 'left', size: 200, resizable: true, minSize: 120, style: 'overflow: hidden;' },
             {
                 type: 'main', overflow: 'hidden',
-                style: 'background-color: white; border: 1px solid silver; border-top: 0px; padding: 10px;',
+                style: 'background-color: white; border: 1px solid silver; border-top: 0px; padding: 0px;',
                 tabs: {
                     active: 'tab0',
                     tabs: [{ id: 'tab0', caption: '<i class="icon-basic-home"></i>' }],
                     onClick: function (event) {
-                        //w2ui.layout.html('main', 'Active tab: ' + event.target);
+                        //w2ui.layout.html('main', '<div id=tab_view><div id=tab_content> Active tab: ' + event.target + '</div><div id=tab_sidebar>00</div></div>');
+                        f_log('Active tab: ' + event.target);
                     },
                     onClose: function (event) {
                         this.click('tab0');
                     }
                 }
-            }
+            },
+            //{ type: 'right', size: 200, resizable: true, style: '', content: 'right' }
         ]
+    },
+    sidebar: {
+        name: 'sidebar',
+        flatButton: false,
+        nodes: [
+            { id: 'level-1-2', text: 'Level 1.2', icon: 'fa fa-coffee', selected: true },
+            { id: 'level-1-3', text: 'Level 1.3', icon: 'fa fa-comment-o' }
+            //{
+            //    id: 'level-1', text: 'Level 1', img: 'icon-folder', expanded: true, group: true, groupShowHide: false,
+            //    nodes: [{ id: 'level-1-1', text: 'Level 1.1', icon: 'fa fa-home' },
+            //    { id: 'level-1-2', text: 'Level 1.2', icon: 'fa fa-coffee', selected: true },
+            //    { id: 'level-1-3', text: 'Level 1.3', icon: 'fa fa-comment-o' }
+            //    ]
+            //},
+            //{
+            //    id: 'level-2', text: 'Level 2', img: 'icon-folder', group: true,
+            //    nodes: [{ id: 'level-2-1', text: 'Level 2.1', icon: 'fa fa-star-o' },
+            //    { id: 'level-2-2', text: 'Level 2.2', icon: 'fa fa-star-o' },
+            //    { id: 'level-2-3', text: 'Level 2.3', icon: 'fa fa-star-o' }
+            //    ]
+            //}
+        ],
+        onFlat: function (event) {
+            $('#sidebar').css('width', (event.goFlat ? '35px' : '200px'));
+        }
     }
 };
 
@@ -35,6 +62,8 @@ $(function () {
     var tree_htm = f_get('view/tree.html');
     w2ui.layout.content('left', tree_htm);
     setTimeout(f_tree_Init, 100);
+
+    //w2ui.layout.content('right', $().w2sidebar(_config.sidebar));
 });
 
 function f_tree_Init() {
@@ -55,9 +84,12 @@ function f_tab_AddNew(node) {
         w2ui.layout.html('main', 'Tab Selected');
     } else {
         tabs.add({ id: tab_name, caption: tab_name, closable: true });
-        w2ui.layout.html('main', 'New tab added');
+        //w2ui.layout.html('main', 'New tab added');
+        w2ui.layout.html('main', '<div id=tab_view><div id=tab_content> Add new tab: ' + tab_name + '</div><div id=tab_sidebar>00</div></div>');
+        setTimeout(function () {
+            $('#tab_sidebar').w2sidebar(_config.sidebar);
+        }, 100);
     }
 }
 
 // #endregion
- 
