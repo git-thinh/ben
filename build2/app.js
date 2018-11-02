@@ -32,7 +32,8 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
-app.use(express.static('public'));
+//app.use(express.static('public'));
+app.use(express.static('tree'));
 /////////////////////////////////////////////////////////////////////////
 
 const _GOO_DRIVER_API_URL = {

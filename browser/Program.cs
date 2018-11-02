@@ -264,7 +264,7 @@ namespace browser
             var ui_close = new Label()
             {
                 Width = _SIZE_BOX,
-                Height = 48,
+                Height = _SIZE_BOX,
                 TextAlign = ContentAlignment.MiddleCenter,
                 Text = string.Empty,
                 BackColor = Color.DodgerBlue,
@@ -308,10 +308,11 @@ namespace browser
 
             this.Shown += (se, ev) =>
             {
-                this.Width = 999;
-                this.Height = Screen.PrimaryScreen.WorkingArea.Height - 27;
-                this.Top = 27;
-                this.Left = Screen.PrimaryScreen.WorkingArea.Width - this.Width;
+                this.Width = 800;
+                this.Height = 480;// Screen.PrimaryScreen.WorkingArea.Height - 27;
+                //this.Top = 27;
+                this.Top = Screen.PrimaryScreen.WorkingArea.Height - this.Height;
+                this.Left = 0;// Screen.PrimaryScreen.WorkingArea.Width - this.Width;
 
                 ui_close.Location = new Point(this.Width - _SIZE_BOX, 0);
                 ui_close.Anchor = AnchorStyles.Top | AnchorStyles.Right;

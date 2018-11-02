@@ -6,3 +6,8 @@
 ," source: (1)
 [1101/114854:INFO:CONSOLE(0)] "Google Maps JavaScript API warning: NoApiKeys https://developers.google.com/maps/documentation/javascript/error-messages#no-api-keys," source: http://maps.google.com/maps-api-v3/api/js/34/16/util.js(224)
 [1101/114854:INFO:CONSOLE(0)] "Google Maps JavaScript API warning: SensorNotRequired https://developers.google.com/maps/documentation/javascript/error-messages#sensor-not-required," source: http://maps.google.com/maps-api-v3/api/js/34/16/util.js(224)
+[1102/113610:ERROR:browser_devtools_client.cc(55)] NOT IMPLEMENTED
+[1102/141357:ERROR:browser_devtools_client.cc(55)] NOT IMPLEMENTED
+[1102/141859:ERROR:browser_devtools_client.cc(55)] NOT IMPLEMENTED
+[1102/143920:ERROR:browser_devtools_client.cc(55)] NOT IMPLEMENTED
+[1102/143956:ERROR:browser_devtools_client.cc(55)] NOT IMPLEMENTED
