@@ -279,7 +279,7 @@ namespace browser
                 WebSecurityDisabled = true,
                 ApplicationCacheDisabled = true
             });
-            ui_browser.PropertyChanged += (sei, evi) => { if (evi.PropertyName == "IsBrowserInitialized") ui_browser.Load("http://localhost:56789/chrome25.html"); };
+            ui_browser.PropertyChanged += (sei, evi) => { if (evi.PropertyName == "IsBrowserInitialized") ui_browser.Load("http://localhost:56789/"); };
             this.Controls.Add(ui_browser);
             ui_browser.MenuHandler = new MenuHandler();
 
