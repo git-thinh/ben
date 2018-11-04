@@ -30,23 +30,14 @@ var _config = {
     sidebar: {
         name: 'sidebar',
         flatButton: false,
+        topHTML: '<div style="height: 25px;"></div>',
         nodes: [
-            { id: 'level-1-2', text: 'Level 1.2', icon: 'fa fa-coffee', selected: true },
-            { id: 'level-1-3', text: 'Level 1.3', icon: 'fa fa-comment-o' }
-            //{
-            //    id: 'level-1', text: 'Level 1', img: 'icon-folder', expanded: true, group: true, groupShowHide: false,
-            //    nodes: [{ id: 'level-1-1', text: 'Level 1.1', icon: 'fa fa-home' },
-            //    { id: 'level-1-2', text: 'Level 1.2', icon: 'fa fa-coffee', selected: true },
-            //    { id: 'level-1-3', text: 'Level 1.3', icon: 'fa fa-comment-o' }
-            //    ]
-            //},
-            //{
-            //    id: 'level-2', text: 'Level 2', img: 'icon-folder', group: true,
-            //    nodes: [{ id: 'level-2-1', text: 'Level 2.1', icon: 'fa fa-star-o' },
-            //    { id: 'level-2-2', text: 'Level 2.2', icon: 'fa fa-star-o' },
-            //    { id: 'level-2-3', text: 'Level 2.3', icon: 'fa fa-star-o' }
-            //    ]
-            //}
+            { id: 'api_publish', text: 'Publish', icon: 'fa fa-bolt' },
+            { id: 'api_setting', text: 'Setting', icon: 'icon-basic-settings', selected: true },
+            { id: 'api_data', text: 'Data', icon: 'icon-basic-server2' },
+            { id: 'api_filter', text: 'Filter', icon: 'icon-basic-pin1' },
+            { id: 'api_menu', text: 'Menu', icon: 'icon-basic-share' },
+            { id: 'api_permission', text: 'Permission', icon: 'icon-basic-key' },
         ],
         onFlat: function (event) {
             $('#sidebar').css('width', (event.goFlat ? '35px' : '200px'));
@@ -85,11 +76,14 @@ function f_tab_AddNew(node) {
     } else {
         tabs.add({ id: tab_name, caption: tab_name, closable: true });
         //w2ui.layout.html('main', 'New tab added');
-        w2ui.layout.html('main', '<div id=tab_view><div id=tab_content> Add new tab: ' + tab_name + '</div><div id=tab_sidebar>00</div></div>');
+        w2ui.layout.html('main', '<div id=tab_view><div id=tab_content></div><div id=tab_sidebar></div></div>');
         setTimeout(function () {
             $('#tab_sidebar').w2sidebar(_config.sidebar);
+            f_api_data_Init('#tab_content');
+            //f_api_publish_Init('#tab_content');
         }, 100);
     }
 }
+ 
 
 // #endregion

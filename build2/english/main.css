@@ -1,6 +1,7 @@
 ﻿
 ::-webkit-scrollbar {
     width: 7px;
+    height: 11px;
 }
 
 ::-webkit-scrollbar-track {
@@ -50,11 +51,11 @@ body {
     height: 30px;
 }
 
-    #search .fa-user {
+    #search i.fa {
         padding: 13px 0 0 6px;
     }
 
-        #search .fa-user:hover {
+        #search i.fa:hover {
             color: orange;
             cursor: pointer;
         }
@@ -87,29 +88,47 @@ body {
     height: 100%;
 }
 
+    #tab_content .w2ui-grid-header {
+        border: none;
+        background-image: none;
+        border-bottom: 1px solid #ccc !important;
+        text-align: left;
+    }
+
 #tab_sidebar {
     float: right;
     position: relative;
     display: inline-block;
     width: 20%;
     height: 100%;
-    background-color: dodgerblue;
 }
 
-    #tab_sidebar.w2ui-sidebar .w2ui-sidebar-div .w2ui-selected {
-        background-image: none !important;
-        border-left: none !important;
-        background-color: #fff !important;
+    #tab_sidebar .w2ui-sidebar-div .w2ui-selected {
+        background-image: none;
+        border: none;
+        background-color: #fff;
+        font-weight: bold;
     }
 
-        #tab_sidebar.w2ui-sidebar .w2ui-sidebar-div .w2ui-selected .w2ui-node-caption,
-        #tab_sidebar.w2ui-sidebar .w2ui-sidebar-div .w2ui-selected:hover .w2ui-node-caption,
-        #tab_sidebar.w2ui-sidebar .w2ui-sidebar-div .w2ui-selected .w2ui-node-image,
-        #tab_sidebar.w2ui-sidebar .w2ui-sidebar-div .w2ui-selected:hover .w2ui-node-image,
-        #tab_sidebar.w2ui-sidebar .w2ui-sidebar-div .w2ui-selected .w2ui-node-image > span,
-        #tab_sidebar.w2ui-sidebar .w2ui-sidebar-div .w2ui-selected:hover .w2ui-node-image > span,
-        #tab_sidebar.w2ui-sidebar .w2ui-sidebar-div .w2ui-selected td.w2ui-node-dots,
-        #tab_sidebar.w2ui-sidebar .w2ui-sidebar-div .w2ui-selected:hover td.w2ui-node-dots {
+        #tab_sidebar .w2ui-sidebar-div .w2ui-selected:before,
+        #tab_sidebar .w2ui-sidebar-div .w2ui-selected.w2ui-inactive:before {
+            border: none !important;
+        }
+
+        #tab_sidebar .w2ui-sidebar-div .w2ui-selected .w2ui-node-caption,
+        #tab_sidebar .w2ui-sidebar-div .w2ui-selected:hover .w2ui-node-caption,
+        #tab_sidebar .w2ui-sidebar-div .w2ui-selected .w2ui-node-image,
+        #tab_sidebar .w2ui-sidebar-div .w2ui-selected:hover .w2ui-node-image,
+        #tab_sidebar .w2ui-sidebar-div .w2ui-selected .w2ui-node-image > span,
+        #tab_sidebar .w2ui-sidebar-div .w2ui-selected:hover .w2ui-node-image > span,
+        #tab_sidebar .w2ui-sidebar-div .w2ui-selected td.w2ui-node-dots,
+        #tab_sidebar .w2ui-sidebar-div .w2ui-selected:hover td.w2ui-node-dots {
             color: orange !important;
             text-shadow: none !important;
         }
+
+    #tab_sidebar .w2ui-node-dots,
+    #tab_sidebar .w2ui-node-dots .w2ui-expand {
+        width: 5px;
+        padding: 0px;
+    }
