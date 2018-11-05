@@ -31,6 +31,7 @@ var _config = {
         name: 'sidebar',
         flatButton: false,
         topHTML: '<div style="height: 25px;"></div>',
+        style: 'background-color: #fff;',
         nodes: [
             { id: 'api_publish', text: 'Publish', icon: 'fa fa-bolt' },
             { id: 'api_setting', text: 'Setting', icon: 'icon-basic-settings', selected: true },
@@ -75,12 +76,12 @@ function f_tab_AddNew(node) {
         w2ui.layout.html('main', 'Tab Selected');
     } else {
         tabs.add({ id: tab_name, caption: tab_name, closable: true });
-        //w2ui.layout.html('main', 'New tab added');
-        w2ui.layout.html('main', '<div id=tab_view><div id=tab_content></div><div id=tab_sidebar></div></div>');
+        //w2ui.layout.html('main', '<div id=tab_view><div id=tab_toolbar></div><div id=tab_content></div><div id=tab_sidebar></div></div>');
+        w2ui.layout.html('main', '<div id=tab_view><div id=tab_toolbar></div><div id=tab_content style="left:0;"></div></div>');
         setTimeout(function () {
             $('#tab_sidebar').w2sidebar(_config.sidebar);
-            f_api_data_Init('#tab_content');
-            //f_api_publish_Init('#tab_content');
+            f_api_data_Init();
+            //f_api_publish_Init();
         }, 100);
     }
 }
