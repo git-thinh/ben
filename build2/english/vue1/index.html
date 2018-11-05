@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin</title>
+    <meta charset="utf-8" />
+    <link href="assets/ui.css" rel="stylesheet" />
+
+
+    <link href="assets/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="assets/lib/animate.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="dynamic-component-demo">
+        <button v-for="tab in screens"
+                v-bind:key="tab.componentName"
+                v-bind:class="['tab-button', { active: currentTab === tab.componentName }]"
+                v-on:click="currentTab = tab.componentName">
+            {{ tab.componentName }}
+        </button>
+        <hr />
+        <component v-bind:is="currentTabComponent" :prop-a="subdata.propA" :prop-b="subdata.propB" class="tab"></component>
+        <hr />
+        <button v-for="tab in screens" 
+                v-bind:key="tab.componentName"
+                v-bind:class="['tab-button', { active: currentTab === tab.componentName }]"
+                v-on:click="f_click(tab.componentName, tab.path)">
+            {{ tab.componentName }}
+        </button>
+    </div>
+
+    <script src="assets/lib/underscore.min.js"></script>
+    <script src="assets/lib/head.load.min.js"></script>
+    <script src="assets/vue/vue.min.js"></script>
+    <!--<script src="assets/vue/vue-router.min.js"></script>-->
+
+    <!--<script src="assets/via/viaReceiver.js"></script>-->
+    <script src="assets/config.js"></script>
+    <script src="assets/init.js"></script>
+</body>
+</html>

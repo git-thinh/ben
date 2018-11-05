@@ -1,6 +1,24 @@
 ﻿var f_log = 1 ? console.log.bind(console, 'UI: ') : function () { };
 function f_get(url) { var r = new XMLHttpRequest(); r.open('GET', url, false); r.send(null); if (r.status === 200) return r.responseText; return ''; }
 
+
+var ___app = new Vue({
+    el: '#main',
+    data: {
+        message: 'Hello Vue!'
+    }
+})
+
+
+var BROADCAST_API;
+if ('BroadcastChannel' in window) {
+    BROADCAST_API = new BroadcastChannel('BROADCAST_API');
+    BROADCAST_API.addEventListener("message", function (e) { f_message_broadcastChannelReceiver(e.data); }, false);
+}
+
+function f_message_broadcastChannelReceiver(data) { }
+
+
 // #region [ LAYOUT ]
 
 var _config = {
@@ -46,17 +64,17 @@ var _config = {
     }
 };
 
-$(function () {
-    // initialization
-    $('#main').w2layout(_config.layout);
-    //w2ui.layout.content('left', $().w2sidebar(_config.sidebar));
+//$(function () {
+//    // initialization
+//    $('#main').w2layout(_config.layout);
+//    //w2ui.layout.content('left', $().w2sidebar(_config.sidebar));
 
-    var tree_htm = f_get('view/tree.html');
-    w2ui.layout.content('left', tree_htm);
-    setTimeout(f_tree_Init, 100);
+//    var tree_htm = f_get('view/tree.html');
+//    w2ui.layout.content('left', tree_htm);
+//    setTimeout(f_tree_Init, 100);
 
-    //w2ui.layout.content('right', $().w2sidebar(_config.sidebar));
-});
+//    //w2ui.layout.content('right', $().w2sidebar(_config.sidebar));
+//});
 
 function f_tree_Init() {
     $('#tree').jstree().on("changed.jstree", function (e, data) {
@@ -85,6 +103,6 @@ function f_tab_AddNew(node) {
         }, 100);
     }
 }
- 
+
 
 // #endregion
