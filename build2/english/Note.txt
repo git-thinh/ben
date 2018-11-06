@@ -6,6 +6,8 @@ http://jsfiddle.net/buele/nYzjY/
 VUE
 https://v1.vuejs.org/api/
 https://v1.vuejs.org/guide/instance.html#Lifecycle-Diagram
+https://v1.vuejs.org/guide/components.html#Parent-Child-Communication
+
 https://github.com/vuejs/Discussion/issues/254
 https://jsfiddle.net/mcgullenz/c7vqwbkm/
 https://v1.vuejs.org/guide/components.html#Literal-vs-Dynamic
