@@ -25,6 +25,26 @@ var vm = new Comp({
 })
 
 
+
+<!-- method handler -->
+<button v-on:click="doThis"></button>
+<!-- inline statement -->
+<button v-on:click="doThat('hello', $event)"></button>
+<!-- shorthand -->
+<button @click="doThis"></button>
+<!-- stop propagation -->
+<button @click.stop="doThis"></button>
+<!-- prevent default -->
+<button @click.prevent="doThis"></button>
+<!-- prevent default without expression -->
+<form @submit.prevent></form>
+<!-- chain modifiers -->
+<button @click.stop.prevent="doThis"></button>
+<!-- key modifier using keyAlias -->
+<input @keyup.enter="onEnter">
+<!-- key modifier using keyCode -->
+<input @keyup.13="onEnter">
+
 // #region [ LAYOUT ]
 
 var _config = {
