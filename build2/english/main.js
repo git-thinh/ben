@@ -3,7 +3,7 @@ function f_get(url) { var r = new XMLHttpRequest(); r.open('GET', url, false); r
 
 var _profile;
 var _app;
-var _page = '<button @click="f_com1">com1: load</button> | <button @click="f_com2">com2: load</button> | <button @click="f_com3">com3: dynamic</button> | <button @click="f_com4">com4: Profile</button>  <hr> '
+var _page = '<button @click="f_destroy">Destroy MAIN</button> <br><button @click="f_com1">com1: load</button> | <button @click="f_com2">com2: load</button> | <button @click="f_com3">com3: dynamic</button> | <button @click="f_com4">com4: Profile</button>  <hr> '
     + '<div id="mount-point"></div>';
 
 var _mixin = {
@@ -11,6 +11,9 @@ var _mixin = {
         f_log('Class Base component created ... data = ', JSON.stringify(this.$data));
     },
     methods: {
+        f_destroy: function () {
+            this.$destroy();
+        },
         f_com3: function () {
             f_log('f_com3 -> dynamic component -> destroy ...');
 
@@ -152,6 +155,11 @@ _app = new Vue({
 
 
 
+    },
+    methods: {
+        f_destroy: function () {
+            this.$destroy();
+        }
     }
 });
 
