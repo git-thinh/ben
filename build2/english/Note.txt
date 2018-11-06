@@ -1,0 +1,315 @@
+
+
+AJS:
+http://jsfiddle.net/buele/nYzjY/
+
+VUE
+https://v1.vuejs.org/api/
+https://v1.vuejs.org/guide/instance.html#Lifecycle-Diagram
+https://github.com/vuejs/Discussion/issues/254
+https://jsfiddle.net/mcgullenz/c7vqwbkm/
+https://v1.vuejs.org/guide/components.html#Literal-vs-Dynamic
+
+
+
+var Comp = Vue.extend({
+  props: ['msg'],
+  template: '<div>{{ msg }}</div>'
+})
+var vm = new Comp({
+  propsData: {
+    msg: 'hello'
+  }
+})
+
+
+// #region [ LAYOUT ]
+
+var _config = {
+    layout: {
+        name: 'layout',
+        padding: 0,
+        panels: [
+            { type: 'left', size: 200, resizable: true, minSize: 120, style: 'overflow: hidden;' },
+            {
+                type: 'main', overflow: 'hidden',
+                style: 'background-color: white; border: 1px solid silver; border-top: 0px; padding: 0px;',
+                tabs: {
+                    active: 'tab0',
+                    tabs: [{ id: 'tab0', caption: '<i class="icon-basic-home"></i>' }],
+                    onClick: function (event) {
+                        //w2ui.layout.html('main', '<div id=tab_view><div id=tab_content> Active tab: ' + event.target + '</div><div id=tab_sidebar>00</div></div>');
+                        f_log('Active tab: ' + event.target);
+                    },
+                    onClose: function (event) {
+                        this.click('tab0');
+                    }
+                }
+            },
+            //{ type: 'right', size: 200, resizable: true, style: '', content: 'right' }
+        ]
+    },
+    sidebar: {
+        name: 'sidebar',
+        flatButton: false,
+        topHTML: '<div style="height: 25px;"></div>',
+        style: 'background-color: #fff;',
+        nodes: [
+            { id: 'api_publish', text: 'Publish', icon: 'fa fa-bolt' },
+            { id: 'api_setting', text: 'Setting', icon: 'icon-basic-settings', selected: true },
+            { id: 'api_data', text: 'Data', icon: 'icon-basic-server2' },
+            { id: 'api_filter', text: 'Filter', icon: 'icon-basic-pin1' },
+            { id: 'api_menu', text: 'Menu', icon: 'icon-basic-share' },
+            { id: 'api_permission', text: 'Permission', icon: 'icon-basic-key' },
+        ],
+        onFlat: function (event) {
+            $('#sidebar').css('width', (event.goFlat ? '35px' : '200px'));
+        }
+    }
+};
+
+//$(function () {
+//    // initialization
+//    $('#main').w2layout(_config.layout);
+//    //w2ui.layout.content('left', $().w2sidebar(_config.sidebar));
+
+//    var tree_htm = f_get('view/tree.html');
+//    w2ui.layout.content('left', tree_htm);
+//    setTimeout(f_tree_Init, 100);
+
+//    //w2ui.layout.content('right', $().w2sidebar(_config.sidebar));
+//});
+
+function f_tree_Init() {
+    $('#tree').jstree().on("changed.jstree", function (e, data) {
+        if (data.selected.length) {
+            var node = data.instance.get_node(data.selected[0]), text = node.text;
+            console.log('The selected node is: ' + text, node);
+            f_tab_AddNew(node);
+        }
+    });
+}
+
+function f_tab_AddNew(node) {
+    var tab_name = node.text
+    var tabs = w2ui.layout_main_tabs;
+    if (tabs.get(tab_name)) {
+        tabs.select(tab_name);
+        w2ui.layout.html('main', 'Tab Selected');
+    } else {
+        tabs.add({ id: tab_name, caption: tab_name, closable: true });
+        //w2ui.layout.html('main', '<div id=tab_view><div id=tab_toolbar></div><div id=tab_content></div><div id=tab_sidebar></div></div>');
+        w2ui.layout.html('main', '<div id=tab_view><div id=tab_toolbar></div><div id=tab_content style="left:0;"></div></div>');
+        setTimeout(function () {
+            $('#tab_sidebar').w2sidebar(_config.sidebar);
+            f_api_data_Init();
+            //f_api_publish_Init();
+        }, 100);
+    }
+}
+
+
+// #endregion
+
+
+// var BROADCAST_API;
+// if ('BroadcastChannel' in window) {
+//     BROADCAST_API = new BroadcastChannel('BROADCAST_API');
+//     BROADCAST_API.addEventListener("message", function (e) { f_message_broadcastChannelReceiver(e.data); }, false);
+// }
+
+// function f_message_broadcastChannelReceiver(data) { }
+
+/////////////////////////////////////////////////////////////////////////////////////
+// register the grid component
+// Vue.component('demo-grid', {
+//     template: '#grid-template',
+//     replace: true,
+//     props: {
+//         data: Array,
+//         columns: Array,
+//         filterKey: String
+//     },
+//     data: function () {
+//         var sortOrders = {}
+//         this.columns.forEach(function (key) {
+//             sortOrders[key] = 1
+//         })
+//         return {
+//             sortKey: '',
+//             sortOrders: sortOrders
+//         }
+//     },
+//     methods: {
+//         sortBy: function (key) {
+//             this.sortKey = key
+//             this.sortOrders[key] = this.sortOrders[key] * -1
+//         }
+//     }
+// })
+
+// bootstrap the demo
+//   var demo = new Vue({
+//     el: '#demo',
+//     data: {
+//       searchQuery: '',
+//       gridColumns: ['name', 'power'],
+//       gridData: [
+//         { name: 'Chuck Norris', power: Infinity },
+//         { name: 'Bruce Lee', power: 9000 },
+//         { name: 'Jackie Chan', power: 7000 },
+//         { name: 'Jet Li', power: 8000 }
+//       ]
+//     }
+//   })
+
+// new Vue({
+//     el: '#demo',
+//     data: {
+//         searchQuery: '',
+//         gridColumns: ['name', 'power'],
+//         gridData: [
+//             { name: 'Chuck Norris', power: Infinity },
+//             { name: 'Bruce Lee', power: 9000 },
+//             { name: 'Jackie Chan', power: 7000 },
+//             { name: 'Jet Li', power: 8000 }
+//         ],
+//         currentView: 'home'
+//     },
+//     components: {
+//         home: {
+//             template: '#grid-template',
+//             replace: true,
+//             props: {
+//                 data: Array,
+//                 columns: Array,
+//                 filterKey: String
+//             },
+//             data: function () {
+//                 var sortOrders = {}
+//                 //   this.columns.forEach(function (key) {
+//                 //     sortOrders[key] = 1
+//                 //   })
+//                 return {
+//                     sortKey: '',
+//                     sortOrders: sortOrders,
+//                 }
+//             },
+//             methods: {
+//                 sortBy: function (key) {
+//                     this.sortKey = key
+//                     this.sortOrders[key] = this.sortOrders[key] * -1
+//                 }
+//             }
+//         },
+//         posts: { /* ... */ },
+//         archive: { /* ... */ }
+//     }
+// })
+
+
+// new Vue({
+//     el: '#demo',
+//     data: {
+//         msg: 'hello',
+//         template: null
+//     },
+//     render: function (createElement) {
+//         if (!this.template) {
+//             console.log(1)
+//             return createElement('div', 'Loading...');
+//         } else {
+//             console.log(2)
+//             return this.template();
+//         }
+//     },
+//     mounted: function () {
+//         var self = this;
+//         setTimeout(function (_self) {
+//             //self.msg = new Date().toString();
+//             var vc = Vue.compile('<div><span>{{ msg }}</span></div>');
+//             var tem = vc.render;
+//             console.log('vc = ', vc);
+//             console.log('render = ', tem);
+//             _self.template = tem;
+//         }, 1000, self);
+//     }
+// })
+
+Vue.component('hello', {
+    functional: true,
+    render: function (createElement, context) {
+
+        console.log('Rendering Foo')
+        return createElement({
+            template: context.props.foo
+        })
+    },
+    props: {
+        foo: {
+            type: String,
+            required: true
+        },
+    }
+});
+
+Vue.component('com1', {
+    activate: function (done) {
+        var self = this
+        setTimeout(function () {
+            self.someData = data
+            done()
+        }, 3000);
+    }
+});
+
+
+var articles = [
+    {
+        title: "Testing",
+        articleTemplate: "<article-title></article-title>"
+    },
+    {
+        title: "Testing 2",
+        articleTemplate: "<special-article :article-title='title'></special-article>"
+    },
+]
+
+Vue.component("article-title", {
+    template: '<span>Article Title</span>'
+})
+
+Vue.component("special-article", {
+    props: ["articleTitle"],
+    template: '<div><h1>{{articleTitle}}</h1><p>Some article text</p></div>'
+})
+
+new Vue({
+    el: "#app",
+    data: function () {
+        return articles;
+    },
+    computed: {
+        compiledArticles: function () {
+
+            // return this.articles.map(a => {
+            //   // compile the template
+            //   var template = Vue.compile(a.articleTemplate);
+            //   // build a component definition object using the compile template.
+            //   // What the data function returns is up to you depending on where 
+            //   // the data comes from.
+            //   return Object.assign({}, template, {data(){return a}});
+            // });
+
+            var a = {
+                title: "Testing",
+                articleTemplate: "<article-title></article-title>"
+            };
+            var template = Vue.compile(a.articleTemplate);
+            var cm = Object.assign({}, template, { data: function () { return a } });
+            //var cm = { template: template };
+            console.log(cm);
+            return [cm];
+        }
+    }
+})

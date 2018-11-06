@@ -1,108 +1,157 @@
 ﻿var f_log = 1 ? console.log.bind(console, 'UI: ') : function () { };
 function f_get(url) { var r = new XMLHttpRequest(); r.open('GET', url, false); r.send(null); if (r.status === 200) return r.responseText; return ''; }
 
+var _profile;
+var _app;
+var _page = '<button @click="f_com1">com1: load</button> | <button @click="f_com2">com2: load</button> | <button @click="f_com3">com3: dynamic</button> | <button @click="f_com4">com4: Profile</button>  <hr> '
+    + '<div id="mount-point"></div>';
 
-var ___app = new Vue({
-    el: '#main',
-    data: {
-        message: 'Hello Vue!'
-    }
-})
+var _mixin = {
+    created: function () {
+        f_log('Class Base component created ... data = ', JSON.stringify(this.$data));
+    },
+    methods: {
+        f_com3: function () {
+            f_log('f_com3 -> dynamic component -> destroy ...');
 
+            //this.destroy();
 
-var BROADCAST_API;
-if ('BroadcastChannel' in window) {
-    BROADCAST_API = new BroadcastChannel('BROADCAST_API');
-    BROADCAST_API.addEventListener("message", function (e) { f_message_broadcastChannelReceiver(e.data); }, false);
-}
+            var temp = '<div><h1> Test com3: <br>{{ msg }} </h1></div>' + _page;
 
-function f_message_broadcastChannelReceiver(data) { }
+            this.msg = 'COM3: ' + new Date().toString();
 
+            this.$el.innerHTML = temp;
+            //$(this.$el).append(temp);
 
-// #region [ LAYOUT ]
+            this.$compile(this.$el);
+        },
+        f_com4: function () {
+            f_log('f_com4');
 
-var _config = {
-    layout: {
-        name: 'layout',
-        padding: 0,
-        panels: [
-            { type: 'left', size: 200, resizable: true, minSize: 120, style: 'overflow: hidden;' },
-            {
-                type: 'main', overflow: 'hidden',
-                style: 'background-color: white; border: 1px solid silver; border-top: 0px; padding: 0px;',
-                tabs: {
-                    active: 'tab0',
-                    tabs: [{ id: 'tab0', caption: '<i class="icon-basic-home"></i>' }],
-                    onClick: function (event) {
-                        //w2ui.layout.html('main', '<div id=tab_view><div id=tab_content> Active tab: ' + event.target + '</div><div id=tab_sidebar>00</div></div>');
-                        f_log('Active tab: ' + event.target);
-                    },
-                    onClose: function (event) {
-                        this.click('tab0');
+            // create reusable constructor
+            var Profile = Vue.extend({
+                template: '<p>{{firstName}} {{lastName}} aka {{alias}}</p><button @click="f_destroy">Destroy Profile</button> <br>  ' + _page
+            });
+
+            // create an instance of Profile
+            var profile = new Profile({
+                mixins: [_mixin],
+                data: {
+                    firstName: 'Walter',
+                    lastName: 'White',
+                    alias: 'Heisenberg'
+                },
+                ready: function () {
+                    f_log('my-component-profile ready');
+                },
+                destroyed: function () {
+                    f_log('my-component-profile destroyed');
+                },
+                methods: {
+                    f_destroy: function () {
+                        f_log('destroy _profile ...');
+                        _profile.$destroy();
                     }
                 }
-            },
-            //{ type: 'right', size: 200, resizable: true, style: '', content: 'right' }
-        ]
-    },
-    sidebar: {
-        name: 'sidebar',
-        flatButton: false,
-        topHTML: '<div style="height: 25px;"></div>',
-        style: 'background-color: #fff;',
-        nodes: [
-            { id: 'api_publish', text: 'Publish', icon: 'fa fa-bolt' },
-            { id: 'api_setting', text: 'Setting', icon: 'icon-basic-settings', selected: true },
-            { id: 'api_data', text: 'Data', icon: 'icon-basic-server2' },
-            { id: 'api_filter', text: 'Filter', icon: 'icon-basic-pin1' },
-            { id: 'api_menu', text: 'Menu', icon: 'icon-basic-share' },
-            { id: 'api_permission', text: 'Permission', icon: 'icon-basic-key' },
-        ],
-        onFlat: function (event) {
-            $('#sidebar').css('width', (event.goFlat ? '35px' : '200px'));
+            });
+
+            // mount it on an element
+            _profile = profile.$mount('#mount-point');
+
+        },
+        f_com1: function () {
+            f_log('f_com1');
+            _app.currentView = 'com1';
+        },
+        f_com2: function () {
+            f_log('f_com2');
+            _app.currentView = 'com2';
         }
     }
 };
 
-//$(function () {
-//    // initialization
-//    $('#main').w2layout(_config.layout);
-//    //w2ui.layout.content('left', $().w2sidebar(_config.sidebar));
+_app = new Vue({
+    el: '#app',
+    data: {
+        currentView: 'home'
+    },
+    created: function () {
+        f_log('VUE created ...');
+    },
+    components: {
+        com1: {
+            mixins: [_mixin],
+            template: '<div>this com1: {{msg}} || <div v-if="true"><button @click="rerender">re-render</button>' + _page + '</div></div>',
+            ready: function () {
+                f_log('my-component1 ready');
+            },
+            destroyed: function () {
+                f_log('my-component1 destroyed');
+            }
+        },
+        com2: {
+            mixins: [_mixin],
+            template: '<div>this com2: {{msg}} || <div v-if="true"><button @click="rerender">re-render</button>' + _page + '</div></div>',
+            ready: function () {
+                f_log('my-component2 ready');
+            },
+            destroyed: function () {
+                f_log('my-component2 destroyed');
+            }
+        },
+        home: {
+            mixins: [_mixin],
+            data: function () {
+                return {
+                    show: true,
+                    msg: ''
+                };
+            },
+            template: '<div>A custom component: {{msg}} || <div v-if="show"><button @click="rerender">re-render</button>' + _page + '</div></div>',
+            activate: function (done) {
+                f_log('begin contractor ....');
 
-//    var tree_htm = f_get('view/tree.html');
-//    w2ui.layout.content('left', tree_htm);
-//    setTimeout(f_tree_Init, 100);
+                var self = this;
+                setTimeout(function () {
+                    f_log('complete contractor ....');
 
-//    //w2ui.layout.content('right', $().w2sidebar(_config.sidebar));
-//});
+                    self.msg = new Date().toString();
+                    done();
+                }, 300);
+            },
+            created: function () {
+                f_log('Component created ...');
+            },
+            ready: function () {
+                f_log('my-component-home ready');
+            },
+            destroyed: function () {
+                f_log('my-component-home destroyed');
+            },
+            methods: {
+                done: function () {
+                    f_log('DONE: ...');
+                },
+                rerender: function () {
+                    this.msg = new Date().toString();
 
-function f_tree_Init() {
-    $('#tree').jstree().on("changed.jstree", function (e, data) {
-        if (data.selected.length) {
-            var node = data.instance.get_node(data.selected[0]), text = node.text;
-            console.log('The selected node is: ' + text, node);
-            f_tab_AddNew(node);
+                    this.show = false;
+
+                    this.$nextTick(function () {
+                        this.show = true;
+
+                        f_log('re-render start');
+
+                        this.$nextTick(function () {
+                            f_log('re-render end');
+                        });
+                    });
+                }
+            }
         }
-    });
-}
 
-function f_tab_AddNew(node) {
-    var tab_name = node.text
-    var tabs = w2ui.layout_main_tabs;
-    if (tabs.get(tab_name)) {
-        tabs.select(tab_name);
-        w2ui.layout.html('main', 'Tab Selected');
-    } else {
-        tabs.add({ id: tab_name, caption: tab_name, closable: true });
-        //w2ui.layout.html('main', '<div id=tab_view><div id=tab_toolbar></div><div id=tab_content></div><div id=tab_sidebar></div></div>');
-        w2ui.layout.html('main', '<div id=tab_view><div id=tab_toolbar></div><div id=tab_content style="left:0;"></div></div>');
-        setTimeout(function () {
-            $('#tab_sidebar').w2sidebar(_config.sidebar);
-            f_api_data_Init();
-            //f_api_publish_Init();
-        }, 100);
+
+
     }
-}
+});
 
-
-// #endregion
