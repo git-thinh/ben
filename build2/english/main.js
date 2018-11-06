@@ -68,14 +68,24 @@ function f_vue_broadcast_message_Receiver(_self, msg, f_callback) {
 
 var _profile;
 var _app;
-var _page = '<button @click="f_destroy">Destroy MAIN</button> <br><button @click="f_com1">com1: load</button> | <button @click="f_com2">com2: load</button> | <button @click="f_com3">com3: dynamic</button> | <button @click="f_com4">com4: Profile</button>  <hr> '
+var _page = '<button @click="f_destroy">Destroy MAIN</button><button @click="f_main_broadCast_toComs({main: new Date()})">MAIN broadCast to COMs</button> <br><button @click="f_com1">com1: load</button> | <button @click="f_com2">com2: load</button> | <button @click="f_com3">com3: dynamic</button> | <button @click="f_com4">com4: Profile</button>  <hr> '
     + '<div id="mount-point"></div>';
 
 var _mixin = {
     created: function () {
         f_log('Class Base component created ... data = ', JSON.stringify(this.$data));
     },
+    events: {
+        BROADCAST_TO_COMS: 'f_receiver_messageFromVue'
+    },
     methods: {
+        f_main_broadCast_toComs: function (m) {
+            f_log('----> Main send broadCast to COMs: ', m);
+            if (_profile) _profile.$emit('BROADCAST_TO_COMS', m);
+        },
+        f_receiver_messageFromVue: function (m) {
+            f_log('#####> COM received broadCast message from VUE: ', m);
+        },
         f_broadCast_toVue: function (m) {
             f_log('----> component send broadcast to vue: ', m);
             //this.$dispatch('BROADCAST_TO_VUE', m);
