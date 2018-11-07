@@ -12,6 +12,52 @@ namespace ConsoleApp9
     {
         private readonly Socket _mainSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
+        static Socket SendToBrowser(Byte[] bSendData,   Socket mySocket)
+        {
+            int numBytes = 0;
+            try
+            {
+                if (mySocket.Connected)
+                {
+                    if ((numBytes = mySocket.Send(bSendData, bSendData.Length, 0)) == -1)
+                    {
+                        Console.WriteLine("Socket Error cannot Send Packet");
+                    }
+                    else
+                    {
+                        Console.WriteLine(String.Format("No. of bytes sent {0}", numBytes));
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Connection Dropped....");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(String.Format("Error Occurred : {0} ", e.Message));
+            }
+
+            return mySocket;
+        }
+
+
+
+
+        static string addHTTPHeader(string buffer)
+        {
+            string str = "";
+            int contentLength = buffer.Length;
+            //str += "HTTP 1.1\r\n";
+            str += "HTTP/1.1 200 OK\r\n";
+            str += "Server: localhost\r\n";
+            str += "Content-Type: text/html\r\n";
+            str += "Accept-Ranges: bytes\r\n";
+            str += "Connection: Keep-Alive\r\n";
+            str += "Content-Length: " + contentLength.ToString() + "\r\n\r\n";
+            return str + buffer;
+        }
+
         public void Start(IPEndPoint local, IPEndPoint remote)
         {
             _mainSocket.Bind(local);
@@ -24,7 +70,7 @@ namespace ConsoleApp9
                 ////////////var state = new State(source, destination._mainSocket);
                 ////////////destination.Connect(remote, source);
                 //source.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive, state);
-                
+
                 var state = new State(source, null);
                 source.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive2, state);
             }
@@ -60,52 +106,56 @@ namespace ConsoleApp9
                 var bytesRead = state.SourceSocket.EndReceive(result);
                 if (bytesRead > 0)
                 {
-                    string _request = Encoding.ASCII.GetString(state.Buffer,0, bytesRead);
+                    string _request = Encoding.ASCII.GetString(state.Buffer, 0, bytesRead);
 
-                    string URL = "https://dictionary.cambridge.org/grammar/british-grammar/above-or-over";
-                    URL = "https://google.com.vn";
+                    //////////string URL = "https://dictionary.cambridge.org/grammar/british-grammar/above-or-over";
+                    ////////////URL = "https://google.com.vn";
 
-                    var dataRecorder = new EasyDataRecorder();
-                    Curl.GlobalInit((int)CURLinitFlag.CURL_GLOBAL_DEFAULT);
-                    try
-                    {
-                        using (Easy easy = new Easy())
-                        {
-                            //easy.SetOpt(CURLoption.CURLOPT_HEADERFUNCTION, (Easy.HeaderFunction)dataRecorder.HandleHeader);
-                            easy.SetOpt(CURLoption.CURLOPT_HEADER, true);
+                    //////////var dataRecorder = new EasyDataRecorder();
+                    //////////Curl.GlobalInit((int)CURLinitFlag.CURL_GLOBAL_DEFAULT);
+                    //////////try
+                    //////////{
+                    //////////    using (Easy easy = new Easy())
+                    //////////    {
+                    //////////        //easy.SetOpt(CURLoption.CURLOPT_HEADERFUNCTION, (Easy.HeaderFunction)dataRecorder.HandleHeader);
+                    //////////        easy.SetOpt(CURLoption.CURLOPT_HEADER, true);
 
-                            easy.SetOpt(CURLoption.CURLOPT_WRITEFUNCTION, (Easy.WriteFunction)dataRecorder.HandleWrite);
-                            
-                            Easy.SSLContextFunction sf = new Easy.SSLContextFunction(OnSSLContext);
-                            easy.SetOpt(CURLoption.CURLOPT_SSL_CTX_FUNCTION, sf);
+                    //////////        easy.SetOpt(CURLoption.CURLOPT_WRITEFUNCTION, (Easy.WriteFunction)dataRecorder.HandleWrite);
 
-                            easy.SetOpt(CURLoption.CURLOPT_URL, URL);
+                    //////////        Easy.SSLContextFunction sf = new Easy.SSLContextFunction(OnSSLContext);
+                    //////////        easy.SetOpt(CURLoption.CURLOPT_SSL_CTX_FUNCTION, sf);
 
-                            /* example.com is redirected, so we tell libcurl to follow redirection */
-                            //easy.SetOpt(CURLoption.CURLOPT_FOLLOWLOCATION, 1L);
+                    //////////        easy.SetOpt(CURLoption.CURLOPT_URL, URL);
 
-                            easy.SetOpt(CURLoption.CURLOPT_CAINFO, "ca-bundle.crt");
-                            
-                            easy.Perform();
-                        }
-                    }
-                    finally
-                    {
-                        Curl.GlobalCleanup();
-                    }
-                    
-                    byte[] bufHeader = dataRecorder.Header.ToArray();
-                    byte[] bufBody = dataRecorder.Written.ToArray();
+                    //////////        /* example.com is redirected, so we tell libcurl to follow redirection */
+                    //////////        //easy.SetOpt(CURLoption.CURLOPT_FOLLOWLOCATION, 1L);
 
-                    string header = dataRecorder.HeaderAsString,
-                        body = Encoding.UTF8.GetString(dataRecorder.Written.ToArray());
+                    //////////        easy.SetOpt(CURLoption.CURLOPT_CAINFO, "ca-bundle.crt");
 
-                    state.SourceSocket.Send(bufHeader, 0, bufHeader.Length, SocketFlags.None);
-                    state.SourceSocket.Send(bufBody, 0, bufBody.Length, SocketFlags.None);
+                    //////////        easy.Perform();
+                    //////////    }
+                    //////////}
+                    //////////finally
+                    //////////{
+                    //////////    Curl.GlobalCleanup();
+                    //////////}
+
+                    //////////byte[] bufHeader = dataRecorder.Header.ToArray();
+                    //////////byte[] bufBody = dataRecorder.Written.ToArray();
+
+                    //////////string header = dataRecorder.HeaderAsString,
+                    //////////    body = Encoding.UTF8.GetString(dataRecorder.Written.ToArray());
+
+                    ////////////state.SourceSocket.Send(bufHeader, 0, bufHeader.Length, SocketFlags.None);
+                    //////////state.SourceSocket.Send(bufBody);
+
+
+                    Byte[] bSendData = Encoding.ASCII.GetBytes("12345");
+                    state.SourceSocket = SendToBrowser(bSendData, state.SourceSocket);
 
                     //state.DestinationSocket.Send(state.Buffer, bytesRead, SocketFlags.None);
-                    //state.SourceSocket.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive, state);
-                    state.SourceSocket.Close();
+                    state.SourceSocket.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive2, state);
+                    //state.SourceSocket.Close();
                 }
             }
             catch
@@ -136,7 +186,7 @@ namespace ConsoleApp9
 
         private class State
         {
-            public Socket SourceSocket { get; private set; }
+            public Socket SourceSocket { get; set; }
             public Socket DestinationSocket { get; private set; }
             public byte[] Buffer { get; private set; }
 
