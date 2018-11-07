@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Security;
+using System.Net.Sockets;
 using System.Text;
 
 namespace test_libcurl
@@ -18,6 +21,27 @@ namespace test_libcurl
             Console.WriteLine("Enter to post ...");
             Console.ReadLine();
             post1();
+        }
+
+        static string TestIp(WebProxy proxy)
+        {
+            var tcp = new TcpClient(proxy.Address.Host, proxy.Address.Port);
+            var stream = tcp.GetStream();
+            var connect = Encoding.ASCII.GetBytes("CONNECT http://www.icanhazip.com:443 HTTP/1.0\n\n");
+            stream.Write(connect, 0, connect.Length);
+            var rawStream = new StreamReader(stream);
+            var strConnect = rawStream.ReadLine();
+            var ssl = new SslStream(stream);
+            ssl.AuthenticateAsClient("www.icanhazip.com");
+            var send = Encoding.ASCII.GetBytes("GET / HTTP / 1.0\r\n" +
+            "Host: www.icanhazip.com\r\n" +
+            "\r\n");
+            ssl.Write(send, 0, send.Length);
+            var sr = new StreamReader(ssl);
+            var str = sr.ReadToEnd();
+            tcp.Close();
+            ssl.Close();
+            return str;
         }
 
         static void get1()

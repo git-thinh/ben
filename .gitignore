@@ -55,3 +55,8 @@ libs/test-libcurl/.vs/test-libcurl/v15/Server/sqlite3/storage.ide-shm
 libs/test-libcurl/.vs/test-libcurl/v15/Server/sqlite3/storage.ide
 libs/test-libcurl/.vs/test-libcurl/v15/Server/sqlite3/db.lock
 libs/test-libcurl/test-libcurl.csproj
+build2/libcurl-post.txt
+build2/libcurl-get.txt
+build2/cookies.txt
+libs/.vs/test-libcurl/v15/Server/sqlite3/storage.ide
+libs/.vs/test-libcurl/v15/Server/sqlite3/db.lock
