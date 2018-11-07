@@ -109,10 +109,18 @@ const _CONFIG = {
     //CLIENT_SECRET: 'x8FbmONjiC3GN7lSPvyPwgG2',
     //REDIRECT_URI: 'http://localhost:61422/',
     SCOPES: [
-        'https://www.googleapis.com/auth/drive.file',
         'https://www.googleapis.com/auth/userinfo.email',
         'https://www.googleapis.com/auth/userinfo.profile',
-        'https://www.googleapis.com/auth/drive.install'
+
+        //::Google.Apis.Drive.v2.dll
+        'https://www.googleapis.com/auth/drive.file',
+        'https://www.googleapis.com/auth/drive.install',
+
+        //::Google.Apis.Calendar.v3.dll
+        //CalendarService.Scopes.Calendar.GetStringValue()
+        'https://www.googleapis.com/auth/calendar.readonly',
+        'https://www.googleapis.com/auth/calendar'
+
         //'https://www.googleapis.com/auth/drive'
         //'https://www.googleapis.com/auth/plus.me',
         //'https://www.googleapis.com/auth/calendar'
