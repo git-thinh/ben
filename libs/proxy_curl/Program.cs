@@ -10,6 +10,9 @@ namespace ConsoleApp9
     {
         public static void Main(string[] args)
         {
+			//https://blog.brunogarcia.com/2012/10/simple-tcp-forwarder-in-c.html
+			//https://azure.microsoft.com/en-us/services/cognitive-services/bing-web-search-api/
+			
             string host = "encrypted.google.com";
             string proxy = "127.0.0.1";//host;
             int proxyPort = 8888;//443;

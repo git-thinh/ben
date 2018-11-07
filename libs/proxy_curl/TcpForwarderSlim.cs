@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SeasideResearch.LibCurlNet;
+using System;
+using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Net.Sockets;
@@ -35,6 +37,21 @@ namespace ConsoleApp9
             _mainSocket.BeginReceive(state.Buffer, 0, state.Buffer.Length, SocketFlags.None, OnDataReceive, state);
         }
 
+        static Int32 OnWriteData(Byte[] buf, Int32 size, Int32 nmemb, Object extraData)
+        {
+            Console.WriteLine("\r\n[BEGIN]");
+            Console.Write(System.Text.Encoding.UTF8.GetString(buf));
+            return size * nmemb;
+        }
+
+        static CURLcode OnSSLContext(SSLContext ctx, Object extraData)
+        {
+            // To do anything useful with the SSLContext object, you'll need
+            // to call the OpenSSL native methods on your own. So for this
+            // demo, we just return what cURL is expecting.
+            return CURLcode.CURLE_OK;
+        }
+
         private static void OnDataReceive2(IAsyncResult result)
         {
             var state = (State)result.AsyncState;
@@ -43,64 +60,52 @@ namespace ConsoleApp9
                 var bytesRead = state.SourceSocket.EndReceive(result);
                 if (bytesRead > 0)
                 {
-                    string s = Encoding.ASCII.GetString(state.Buffer,0, bytesRead);
+                    string _request = Encoding.ASCII.GetString(state.Buffer,0, bytesRead);
 
-                    string host = "216.58.221.99";
-                    byte[] buffer = new byte[2048];
-                    int bytes;
+                    string URL = "https://dictionary.cambridge.org/grammar/british-grammar/above-or-over";
+                    URL = "https://google.com.vn";
 
-                    // Connect socket
-                    TcpClient client = new TcpClient("127.0.0.1", 8888);
-                    NetworkStream stream = client.GetStream();
-
-                    // Establish Tcp tunnel
-                    byte[] tunnelRequest = Encoding.UTF8.GetBytes(String.Format("CONNECT {0}:443  HTTP/1.1\r\nHost: {0}\r\n\r\n", host));
-                    stream.Write(tunnelRequest, 0, tunnelRequest.Length);
-                    stream.Flush();
-
-                    // Read response to CONNECT request
-                    // There should be loop that reads multiple packets
-                    bytes = stream.Read(buffer, 0, buffer.Length);
-                    Console.Write(Encoding.UTF8.GetString(buffer, 0, bytes));
-
-                    // Wrap in SSL stream
-                    SslStream sslStream = new SslStream(stream);
-                    sslStream.AuthenticateAsClient(host);
-
-                    // Send request
-                    byte[] request = Encoding.UTF8.GetBytes(String.Format("GET https://{0}/  HTTP/1.1\r\nHost: {0}\r\n\r\n", host));
-                    sslStream.Write(request, 0, request.Length);
-                    sslStream.Flush();
-
-                    // Read response
-                    do
+                    var dataRecorder = new EasyDataRecorder();
+                    Curl.GlobalInit((int)CURLinitFlag.CURL_GLOBAL_DEFAULT);
+                    try
                     {
-                        bytes = sslStream.Read(buffer, 0, buffer.Length);
-                        Console.Write(Encoding.UTF8.GetString(buffer, 0, bytes));
-                    } while (bytes != 0);
+                        using (Easy easy = new Easy())
+                        {
+                            //easy.SetOpt(CURLoption.CURLOPT_HEADERFUNCTION, (Easy.HeaderFunction)dataRecorder.HandleHeader);
+                            easy.SetOpt(CURLoption.CURLOPT_HEADER, true);
 
-                    client.Close();
+                            easy.SetOpt(CURLoption.CURLOPT_WRITEFUNCTION, (Easy.WriteFunction)dataRecorder.HandleWrite);
+                            
+                            Easy.SSLContextFunction sf = new Easy.SSLContextFunction(OnSSLContext);
+                            easy.SetOpt(CURLoption.CURLOPT_SSL_CTX_FUNCTION, sf);
 
+                            easy.SetOpt(CURLoption.CURLOPT_URL, URL);
 
+                            /* example.com is redirected, so we tell libcurl to follow redirection */
+                            //easy.SetOpt(CURLoption.CURLOPT_FOLLOWLOCATION, 1L);
 
+                            easy.SetOpt(CURLoption.CURLOPT_CAINFO, "ca-bundle.crt");
+                            
+                            easy.Perform();
+                        }
+                    }
+                    finally
+                    {
+                        Curl.GlobalCleanup();
+                    }
+                    
+                    byte[] bufHeader = dataRecorder.Header.ToArray();
+                    byte[] bufBody = dataRecorder.Written.ToArray();
 
+                    string header = dataRecorder.HeaderAsString,
+                        body = Encoding.UTF8.GetString(dataRecorder.Written.ToArray());
 
-
-
-
-
-
-
-
-
-
-                    state.SourceSocket.Send(buffer, 0, bytes, SocketFlags.None);
+                    state.SourceSocket.Send(bufHeader, 0, bufHeader.Length, SocketFlags.None);
+                    state.SourceSocket.Send(bufBody, 0, bufBody.Length, SocketFlags.None);
 
                     //state.DestinationSocket.Send(state.Buffer, bytesRead, SocketFlags.None);
-                    state.SourceSocket.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive, state);
-
-
-
+                    //state.SourceSocket.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive, state);
+                    state.SourceSocket.Close();
                 }
             }
             catch
