@@ -46,3 +46,4 @@ build2/public/_/gulpfile.js
 build2/public/_/bower.json
 build2/browser.vshost.exe.manifest
 build2/browser.vshost.exe
+/apigoogle/obj

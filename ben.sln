@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Google.Protobuf", "libs\Goo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "apigd", "apigd\apigd.csproj", "{2C8C4625-F511-4C5F-A63D-0B4D17880E8A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "apigoogle", "apigoogle\apigoogle.csproj", "{2F4C7B32-1CDC-4164-B240-1AE25BAA3948}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,14 @@ Global
 		{2C8C4625-F511-4C5F-A63D-0B4D17880E8A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2C8C4625-F511-4C5F-A63D-0B4D17880E8A}.Release|x86.ActiveCfg = Release|Any CPU
 		{2C8C4625-F511-4C5F-A63D-0B4D17880E8A}.Release|x86.Build.0 = Release|Any CPU
+		{2F4C7B32-1CDC-4164-B240-1AE25BAA3948}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F4C7B32-1CDC-4164-B240-1AE25BAA3948}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F4C7B32-1CDC-4164-B240-1AE25BAA3948}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2F4C7B32-1CDC-4164-B240-1AE25BAA3948}.Debug|x86.Build.0 = Debug|Any CPU
+		{2F4C7B32-1CDC-4164-B240-1AE25BAA3948}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F4C7B32-1CDC-4164-B240-1AE25BAA3948}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F4C7B32-1CDC-4164-B240-1AE25BAA3948}.Release|x86.ActiveCfg = Release|Any CPU
+		{2F4C7B32-1CDC-4164-B240-1AE25BAA3948}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,6 +93,7 @@ Global
 		{2FE79DCE-C88F-423D-8B1B-FF9EE59E189E} = {0F536897-5832-4A49-BBD5-ECE97C74F9AD}
 		{AD2E9AD8-03E0-4E99-AB72-DA9226E2612E} = {0F536897-5832-4A49-BBD5-ECE97C74F9AD}
 		{07E556C5-B00D-45EE-85B5-F8A9C6285162} = {0F536897-5832-4A49-BBD5-ECE97C74F9AD}
+		{2C8C4625-F511-4C5F-A63D-0B4D17880E8A} = {0F536897-5832-4A49-BBD5-ECE97C74F9AD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CFDCF978-E20D-4933-9A06-FB3AE9F10830}
