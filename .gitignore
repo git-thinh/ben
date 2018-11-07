@@ -47,3 +47,11 @@ build2/public/_/bower.json
 build2/browser.vshost.exe.manifest
 build2/browser.vshost.exe
 /apigoogle/obj
+libs/.vs/test-libcurl/v15/.suo
+build2/test_libcurl.exe
+/libs/test-libcurl/obj
+libs/test-libcurl/.vs/test-libcurl/v15/Server/sqlite3/storage.ide-wal
+libs/test-libcurl/.vs/test-libcurl/v15/Server/sqlite3/storage.ide-shm
+libs/test-libcurl/.vs/test-libcurl/v15/Server/sqlite3/storage.ide
+libs/test-libcurl/.vs/test-libcurl/v15/Server/sqlite3/db.lock
+libs/test-libcurl/test-libcurl.csproj

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace demo
+namespace test_libcurl
 {
     class Program
     {
@@ -12,7 +12,7 @@ namespace demo
         static void Main(string[] args)
         {
             //URL = "http://httpbin.org/";
-            URL = "https://vnexpress.net/";
+            //URL = "https://vnexpress.net/";
 
             var dataRecorder = new EasyDataRecorder();
 
