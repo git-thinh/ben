@@ -60,3 +60,6 @@ build2/libcurl-get.txt
 build2/cookies.txt
 libs/.vs/test-libcurl/v15/Server/sqlite3/storage.ide
 libs/.vs/test-libcurl/v15/Server/sqlite3/db.lock
+/libs/proxy_curl/obj
+/libs/proxy_curl/.vs
+libs/.vs/proxy_curl/v15/.suo
