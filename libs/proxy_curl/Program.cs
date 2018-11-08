@@ -6,6 +6,7 @@ using System.Net;
 using SeasideResearch.LibCurlNet;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace ConsoleApp9
 {
@@ -27,16 +28,16 @@ namespace ConsoleApp9
                 NetworkStream stream = client.GetStream();
 
                 while (client.Available < 3)
-                {
-                    // wait for enough bytes to be available
-                }
+                    Console.WriteLine("::> wait for enough bytes to be available");
 
                 Byte[] bytes = new Byte[client.Available];
                 stream.Read(bytes, 0, bytes.Length);
 
                 //translate bytes of request to string
-                String _request = Encoding.UTF8.GetString(bytes);
-                Console.WriteLine(_request);
+                string _request = Encoding.UTF8.GetString(bytes),
+                    line_first = _request.Split(new string[] { "\r\n" }, StringSplitOptions.None)[0].Trim(),
+                    url = line_first.Replace("GET ", string.Empty).Replace("POST ", string.Empty).Trim().Split(' ')[0];
+                Console.WriteLine("-> " + url);
 
                 //string res = addHTTPHeader("12345");
                 //Byte[] bSendData = Encoding.ASCII.GetBytes(res);
@@ -52,7 +53,7 @@ namespace ConsoleApp9
                 {
 
                     string URL = "https://dictionary.cambridge.org/grammar/british-grammar/above-or-over";
-                    //URL = "https://google.com.vn";
+                    URL = "https://azure.microsoft.com/en-us/services/cognitive-services/bing-web-search-api/";
 
                     var dataRecorder = new EasyDataRecorder();
                     Curl.GlobalInit((int)CURLinitFlag.CURL_GLOBAL_DEFAULT);
@@ -60,8 +61,8 @@ namespace ConsoleApp9
                     {
                         using (Easy easy = new Easy())
                         {
-                            easy.SetOpt(CURLoption.CURLOPT_HEADERFUNCTION, (Easy.HeaderFunction)dataRecorder.HandleHeader);
-                            easy.SetOpt(CURLoption.CURLOPT_HEADER, false);
+                            //easy.SetOpt(CURLoption.CURLOPT_HEADERFUNCTION, (Easy.HeaderFunction)dataRecorder.HandleHeader);
+                            //easy.SetOpt(CURLoption.CURLOPT_HEADER, false);
 
                             easy.SetOpt(CURLoption.CURLOPT_WRITEFUNCTION, (Easy.WriteFunction)dataRecorder.HandleWrite);
 
@@ -90,6 +91,8 @@ namespace ConsoleApp9
                         body = Encoding.UTF8.GetString(bufBody);
 
                     //state.SourceSocket.Send(bufHeader, 0, bufHeader.Length, SocketFlags.None);
+                    Console.WriteLine("OK> " + URL);
+                    File.WriteAllText("text.txt", body);
 
                     Byte[] bSendData = Encoding.UTF8.GetBytes(addHTTPHeader(bufBody.Length, body));
                     stream.Write(bSendData, 0, bSendData.Length);
@@ -113,7 +116,7 @@ namespace ConsoleApp9
             str += "Content-Length: " + contentLength.ToString() + "\r\n\r\n";
             return str + body;
         }
-        
+
         static CURLcode OnSSLContext(SSLContext ctx, Object extraData)
         {
             // To do anything useful with the SSLContext object, you'll need
