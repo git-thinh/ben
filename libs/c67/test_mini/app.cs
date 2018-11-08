@@ -15,13 +15,16 @@ namespace test_mini
             _browser = new WebBrowser();
             f1();
             Console.ReadLine();
+            Cef.Shutdown();
+
         }
 
         static async void f1()
         {
-            _browser.OpenUrl(urls.url);
+            _browser.OpenUrl(_CONST.URL);
             string source = await _browser.Browser.GetSourceAsync();
             Console.WriteLine(source);
+            
         }
     }
 
@@ -55,7 +58,11 @@ namespace test_mini
             Cef.Initialize(settings, performDependencyCheck: true, browserProcessHandler: null);
 
             RequestContext = new RequestContext();
-            Browser = new ChromiumWebBrowser("about:blank", null, RequestContext);
+            Browser = new ChromiumWebBrowser("", null, RequestContext);
+            Browser.FrameLoadStart += (se, ev) => {
+                Console.WriteLine("?> " + ev.Url);
+                if (ev.Url == urls.url) Browser.Stop();
+            };
             PageInitialize();
         }
 

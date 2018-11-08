@@ -13,23 +13,11 @@ namespace test_mini
     { 
         public static int Main(string[] args)
         {
-            string url = "http://www.reddit.com/";
-            url = "http://icanhazip.com/";
-            //url = "https://www.google.com/";
-            //url = "https://dictionary.cambridge.org/grammar/british-grammar/above-or-over";
-            url = "https://azure.microsoft.com/en-us/services/cognitive-services/bing-web-search-api/";
+            Cef.Initialize(_CONST.CEF_SETTINGS, false, null);
 
-            // You need to replace this with your own call to Cef.Initialize();
-            // Default is to use an InMemory cache, set CachePath to persist cache
-            var settings = new CefSettings
-            {
-                CachePath = "cache",
-                LogSeverity = LogSeverity.Disable
-            };
-            Cef.Initialize(settings, false, null);
+            MainAsync();
 
-            MainAsync(url);
-            
+            Console.WriteLine(":::::::::::::::::::::::> DONE: Press any key to exit");
             // We have to wait for something, otherwise the process will exit too soon.
             Console.ReadKey();
 
@@ -40,19 +28,23 @@ namespace test_mini
             return 0;
         }
 
-        private static async void MainAsync(string url)
-        {
-            var browserSettings = new BrowserSettings();
-            //Reduce rendering speed to one frame per second, tweak this to whatever suites you best
-            browserSettings.WindowlessFrameRate = 1;
-
-            using (var browser = new ChromiumWebBrowser(url, browserSettings))
+        private static async void MainAsync()
+        { 
+            using (var browser = new ChromiumWebBrowser(_CONST.URL, _CONST.BROWSER_SETTINGS))
             {
+                browser.RequestHandler = new RequestHandler();
+                browser.FrameLoadStart += (se, ev) =>
+                {
+                    Console.WriteLine("?> " + ev.Url);
+                    if (ev.Url == _CONST.URL)
+                        browser.Stop();
+                };
+
                 await LoadPageAsync(browser);
 
                 //Get the browser source
                 var source = await browser.GetSourceAsync();
-
+                Console.WriteLine("\r\n\r\n\r\n");
                 Console.WriteLine(source);
 
                 //Allow for a little delay before attempting to `Dispose` of the ChromiumWebBrowser,
@@ -61,7 +53,19 @@ namespace test_mini
                 await Task.Delay(10);
             }
 
-            Console.WriteLine("Press any key to exit");
+        }
+
+        /// <summary>
+        /// Method executes when the download page is completed and the extracted text is available.
+        /// </summary>
+        /// <param name="task"></param>
+        private static void DisplayText(Task<string> task)
+        {
+            Console.WriteLine("Retrieving content...");
+
+            var text = task.Result;
+
+            Console.WriteLine("'{0}'", text);
         }
 
         public static Task LoadPageAsync(IWebBrowser browser)
@@ -71,11 +75,15 @@ namespace test_mini
             EventHandler<LoadingStateChangedEventArgs> handler = null;
             handler = (sender, args) =>
             {
-                //Wait for while page to finish loading not just the first frame
+                Console.WriteLine(":: Wait for while page to finish loading not just the first frame");
+
                 if (!args.IsLoading)
                 {
                     browser.LoadingStateChanged -= handler;
                     tcs.TrySetResult(true);
+
+                    // Wait for the screenshot to be taken.
+                    //browser.GetTextAsync().ContinueWith(DisplayText);
                 }
             };
 

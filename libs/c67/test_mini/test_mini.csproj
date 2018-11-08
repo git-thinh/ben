@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>test_mini</RootNamespace>
     <AssemblyName>test_mini</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -85,9 +85,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="app.cs" />
+    <Compile Include="app3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="urls.cs" />
+    <Compile Include="_CONST.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
