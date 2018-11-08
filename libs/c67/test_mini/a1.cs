@@ -1,53 +1,36 @@
-﻿
-using System;
+﻿using System;
 using System.Security.Cryptography.X509Certificates;
 using CefSharp;
 using CefSharp.OffScreen;
 
 namespace test_mini
 {
-    public class _CONST
+    class Program
     {
-        //https://peter.sh/experiments/chromium-command-line-switches/#mute-audio
-
-
-        //public const string URL = "http://www.reddit.com/";
-        //public const string URL = "http://icanhazip.com/";
-        //public const string URL = "https://www.google.com/";
-        //public const string URL = "https://dictionary.cambridge.org/grammar/british-grammar/above-or-over";
-        public const string URL = "https://azure.microsoft.com/en-us/services/cognitive-services/bing-web-search-api/";
-
-        public static BrowserSettings BROWSER_SETTINGS = new BrowserSettings()
+        static void Main(string[] args)
         {
-            FileAccessFromFileUrls = CefState.Disabled,
-            UniversalAccessFromFileUrls = CefState.Disabled,
-            WebSecurity = CefState.Disabled,
-            WebGl = CefState.Disabled,
-            //Reduce rendering speed to one frame per second, tweak this to whatever suites you best
-            ////WindowlessFrameRate = 1,
-        };
+            Cef.Initialize(_CONST.CEF_SETTINGS, false, null);
 
-        // You need to replace this with your own call to Cef.Initialize();
-        // Default is to use an InMemory cache, set CachePath to persist cache
-        public static CefSettings CEF_SETTINGS = new CefSettings
-        {
-            CachePath = "cache",
-            LogSeverity = LogSeverity.Disable
-        };
+            using (var browser = new ChromiumWebBrowser(_CONST.URL, _CONST.BROWSER_SETTINGS))
+            {
+                browser.RequestHandler = new BingRequestHandler();
 
-        static _CONST()
-        {
-            //var dic = CEF_SETTINGS.CefCommandLineArgs;
-            //if (dic.ContainsKey("mute-audio")) dic["mute-audio"] = "1"; else dic.Add("mute-audio", "1");
-            //if (dic.ContainsKey("enable-system-flash")) dic["enable-system-flash"] = "0"; else dic.Add("enable-system-flash", "0");
-            CEF_SETTINGS.SetOffScreenRenderingBestPerformanceArgs();
+                browser.LoadingStateChanged += (se, ev) => {
+                    if (ev.IsLoading == false) {
+                        Console.WriteLine("\r\n\r\n\r\n ::::::::::::::::::> LOCAD_COMPLETED ...");
+                    }
+                };
 
-            //Autoshutdown when closing
-            CefSharpSettings.ShutdownOnExit = true;
+                // We have to wait for something, otherwise the process will exit too soon.
+                Console.WriteLine("\r\n\r\n\r\n Wait for output and then press any key...");
+                Console.ReadKey();
+            }
+
+            Cef.Shutdown();
         }
     }
-    
-    public class RequestHandler : IRequestHandler
+
+    public class BingRequestHandler : IRequestHandler
     {
         public bool CanGetCookies(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request)
         {
@@ -76,14 +59,28 @@ namespace test_mini
 
         public CefReturnValue OnBeforeResourceLoad(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, IRequestCallback callback)
         {
-            if (request.Url != _CONST.URL)
+            string url = request.Url, method = request.Method;
+
+            if (url == _CONST.URL)
             {
-                Console.WriteLine("????> " + request.Url);
+                Console.WriteLine("\r\n\r\n\r\n -> URL: " + request.Url);
+                return CefReturnValue.Continue;
+            }
+
+            if(url.Contains("microsoft.com") == false && url.Contains("azure") == false)
+            {
+                //Console.WriteLine("\r\n\r\n -> CANCEL: " + url);
                 return CefReturnValue.Cancel;
             }
 
-            Console.WriteLine("----> " + request.Url);
-            return CefReturnValue.Continue;
+            if (url.Contains(".js") || method == "POST")
+            {
+                Console.WriteLine("\r\n\r\n -> OK: " + url);
+                return CefReturnValue.Continue;
+            }
+
+            //Console.WriteLine("\r\n\r\n -> CANCEL: " + url);
+            return CefReturnValue.Cancel;
         }
 
         public bool OnCertificateError(IWebBrowser chromiumWebBrowser, IBrowser browser, CefErrorCode errorCode, string requestUrl, ISslInfo sslInfo, IRequestCallback callback)

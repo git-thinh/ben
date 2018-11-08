@@ -11,21 +11,16 @@ namespace test_mini
 {
     public class Program
     { 
-        public static int Main(string[] args)
+        public static void Main(string[] args)
         {
             Cef.Initialize(_CONST.CEF_SETTINGS, false, null);
 
             MainAsync();
 
             Console.WriteLine(":::::::::::::::::::::::> DONE: Press any key to exit");
-            // We have to wait for something, otherwise the process will exit too soon.
-            Console.ReadKey();
-
-            // Clean up Chromium objects. You need to call this in your application otherwise
-            // you will get a crash when closing.
-            Cef.Shutdown();
-
-            return 0;
+            Console.ReadKey(); 
+            // Clean up Chromium objects. You need to call this in your application otherwise you will get a crash when closing.
+            Cef.Shutdown(); 
         }
 
         private static async void MainAsync()
@@ -42,7 +37,7 @@ namespace test_mini
 
                 await LoadPageAsync(browser);
 
-                //Get the browser source
+                ////////Get the browser source
                 var source = await browser.GetSourceAsync();
                 Console.WriteLine("\r\n\r\n\r\n");
                 Console.WriteLine(source);
@@ -53,19 +48,6 @@ namespace test_mini
                 await Task.Delay(10);
             }
 
-        }
-
-        /// <summary>
-        /// Method executes when the download page is completed and the extracted text is available.
-        /// </summary>
-        /// <param name="task"></param>
-        private static void DisplayText(Task<string> task)
-        {
-            Console.WriteLine("Retrieving content...");
-
-            var text = task.Result;
-
-            Console.WriteLine("'{0}'", text);
         }
 
         public static Task LoadPageAsync(IWebBrowser browser)
@@ -81,9 +63,6 @@ namespace test_mini
                 {
                     browser.LoadingStateChanged -= handler;
                     tcs.TrySetResult(true);
-
-                    // Wait for the screenshot to be taken.
-                    //browser.GetTextAsync().ContinueWith(DisplayText);
                 }
             };
 

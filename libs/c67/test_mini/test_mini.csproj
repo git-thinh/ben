@@ -85,7 +85,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="app3.cs" />
+    <Compile Include="a1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="_CONST.cs" />
   </ItemGroup>
