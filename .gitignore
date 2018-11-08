@@ -67,3 +67,10 @@ libs/.vs/proxy_curl/v14/.suo
 build2/proxy_curl.vshost.exe.manifest
 build2/proxy_curl.vshost.exe
 /_
+/libs/c67/test_mini/obj
+/libs/c67/test_mini/.vs
+/libs/c67/buildx86
+libs/.vs/proxy_curl/v15/Server/sqlite3/storage.ide-wal
+libs/.vs/proxy_curl/v15/Server/sqlite3/storage.ide-shm
+libs/.vs/proxy_curl/v15/Server/sqlite3/storage.ide
+libs/.vs/proxy_curl/v15/Server/sqlite3/db.lock
