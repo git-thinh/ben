@@ -19,28 +19,26 @@ namespace test_mini
 
         public static BrowserSettings BROWSER_SETTINGS = new BrowserSettings()
         {
-            FileAccessFromFileUrls = CefState.Disabled,
-            UniversalAccessFromFileUrls = CefState.Disabled,
-            WebSecurity = CefState.Disabled,
-            WebGl = CefState.Disabled,
-            //Reduce rendering speed to one frame per second, tweak this to whatever suites you best
-            ////WindowlessFrameRate = 1,
+            //////FileAccessFromFileUrls = CefState.Disabled,
+            //////UniversalAccessFromFileUrls = CefState.Disabled,
+            //////WebSecurity = CefState.Disabled,
+            //////WebGl = CefState.Disabled,
+            ////////Reduce rendering speed to one frame per second, tweak this to whatever suites you best
+            //////////WindowlessFrameRate = 1,
         };
 
         // You need to replace this with your own call to Cef.Initialize();
+
         // Default is to use an InMemory cache, set CachePath to persist cache
         public static CefSettings CEF_SETTINGS = new CefSettings
         {
             CachePath = "cache",
-            LogSeverity = LogSeverity.Disable
+            //LogSeverity = LogSeverity.Disable
         };
 
         static _CONST()
         {
-            //var dic = CEF_SETTINGS.CefCommandLineArgs;
-            //if (dic.ContainsKey("mute-audio")) dic["mute-audio"] = "1"; else dic.Add("mute-audio", "1");
-            //if (dic.ContainsKey("enable-system-flash")) dic["enable-system-flash"] = "0"; else dic.Add("enable-system-flash", "0");
-            CEF_SETTINGS.SetOffScreenRenderingBestPerformanceArgs();
+            //////CEF_SETTINGS.SetOffScreenRenderingBestPerformanceArgs();
 
             //Autoshutdown when closing
             CefSharpSettings.ShutdownOnExit = true;
